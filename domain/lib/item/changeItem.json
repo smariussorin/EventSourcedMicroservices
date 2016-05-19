@@ -16,9 +16,12 @@
         },
         "text": {
           "type": "string"
+        },
+        "userId": {
+          "type": "string"
         }
       },
-      "required": ["id", "text"]
+      "required": ["id", "text", "userId"]
     }
   },
   "required": ["id", "command", "payload"]

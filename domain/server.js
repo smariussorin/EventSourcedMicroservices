@@ -13,7 +13,7 @@ var domain = require('cqrs-domain')({
         port: 27017,                                // optional
         dbName: 'domain',                           // optional
         eventsCollectionName: 'events',             // optional
-        snapshotsCollectionName: 'snapshots',       // optional
+        snapshotsCollectionName: 'snapshots',       // optional 
         transactionsCollectionName: 'transactions', // optional
         timeout: 10000                              // optional
       // authSource: 'authedicationDatabase',        // optional

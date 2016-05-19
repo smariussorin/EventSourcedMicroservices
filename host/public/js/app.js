@@ -88,7 +88,7 @@
 
     // view templates
     var itemTemplate = _.template('<%= text %> <a class="deleteItem" href="">delete</a> <a class="editItem" href="">edit</a>');
-    var editItemTemplate = _.template('<input id="newText" type="text" value="<%= text %>"></input><button id="changeItem">save</button>');
+    var editItemTemplate = _.template('<input id="newText" type="text" value="<%= text %>"></input><input id="newUserId" type="text" value="<%= userId %>"></input><button id="changeItem">save</button>');
 
     // views
     var ItemView = Backbone.View.extend({
@@ -136,11 +136,15 @@
             e.preventDefault();
 
             var itemText = this.$('#newText').val();
+            var itemUserId = this.$('#newUserId').val();
 
             this.$('#newText').val('');
+            this.$('#newUserId').val('');
+
             this.model.editMode = false;
             this.render();
 
+            //validation
             if (itemText) {
 
                 // CQRS command
@@ -149,7 +153,8 @@
                     command: 'changeItem',
                     payload: { 
                         id: this.model.id,
-                        text: itemText 
+                        text: itemText,
+                        userId : itemUserId
                     }
                 });
 
@@ -194,6 +199,7 @@
             e.preventDefault();  
 
             var itemText = this.$('#newItemText').val();
+            var itemUserId = this.$('#newItemUserId').val();
 
             if (itemText) {
 
@@ -201,7 +207,10 @@
                 var cmd = new Backbone.CQRS.Command({
                     id:_.uniqueId('msg'),
                     command: 'createItem',
-                    payload: { text: itemText }
+                    payload: { 
+                        text: itemText,
+                        userId : itemUserId
+                    }
                 });
 
                 // emit it
@@ -209,6 +218,7 @@
             }
 
             this.$('#newItemText').val('');
+            this.$('#newItemUserId').val('');
         },
 
         render: function() {

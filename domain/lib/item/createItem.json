@@ -13,9 +13,12 @@
       "properties": {
         "text": {
           "type": "string"
+        },
+        "userId": {
+          "type": "string"
         }
       },
-      "required": ["text"]
+      "required": ["text", "userId"]
     }
   },
   "required": ["id", "command", "payload"]
