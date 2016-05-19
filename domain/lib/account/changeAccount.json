@@ -1,0 +1,28 @@
+{
+  "title": "changeAccount",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "command": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name", "email"]
+    }
+  },
+  "required": ["id", "command", "payload"]
+}

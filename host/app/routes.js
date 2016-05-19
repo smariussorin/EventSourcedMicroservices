@@ -3,14 +3,9 @@ exports.actions = function(app, options, repository) {
     var itemRepo = repository.extend({
         collectionName: 'item'
     });
-
-    // this is only a little hack for this sample when it should work with inMemory DB
-    if (options.repository.type === 'inmemory') {
-        itemRepo = require('../viewBuilders/collection').repository;
-    }
-
-    app.get('/', function(req, res) {
-        res.render('index');
+	
+    app.get('/items', function(req, res) {
+        res.render('items-index');
     });
         
     app.get('/allItems.json', function(req, res) { 
@@ -18,6 +13,22 @@ exports.actions = function(app, options, repository) {
             if (err) res.json({});
                 
             res.json(items);
+        });
+    });
+	
+	var accountRepo = repository.extend({
+        collectionName: 'account'
+    });
+	
+    app.get('/accounts', function(req, res) {
+        res.render('accounts-index');
+    });
+        
+    app.get('/allAccounts.json', function(req, res) { 
+        accountRepo.find(function(err, accounts) {
+            if (err) res.json({});
+                
+            res.json(accounts);
         });
     });
 
