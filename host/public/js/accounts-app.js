@@ -213,6 +213,22 @@
                     }
                 });
 
+                // observe it
+                cmd.observe(function(event) {
+                    console.log("createAccount callback " + event);
+
+                    var cmdItem = new Backbone.CQRS.Command({
+                        id:_.uniqueId('msg'),
+                        command: 'createItem',
+                        payload: { 
+                            text: accountName + "_item",
+                            userId : accountEmail
+                        }
+                    });
+
+                    cmdItem.emit()
+                });
+
                 // emit it
                 cmd.emit();
             }
