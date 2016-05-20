@@ -1,11 +1,23 @@
 module.exports = require('cqrs-domain').defineBusinessRule({
   name: 'checkForError'
 }, function (changed, previous, events, command) {
-  if (changed.get('text').toLowerCase().indexOf('error') >= 0) {
-    throw new Error('This is just a sample rule!');
+  
+  console.log("------changed------");
+  console.log(changed);
+  console.log("------changed payload-----");
+  console.log(changed.uncommittedEvents);
+  console.log("------previous------");
+  console.log(previous);
+  console.log("------events------");
+  console.log(events);
+  console.log("------command------");
+  console.log(command);
+
+  if (changed.get('userId') == null) {
+      throw new Error('userId cannot be empty');
   }
 
-   if (changed.get('userId').toLowerCase().indexOf('error') >= 0) {
-    throw new Error('This is just a sample rule!');
-   }
+  if (changed.get('text') == null) {
+      throw new Error('text cannot be empty');
+  }
 });
