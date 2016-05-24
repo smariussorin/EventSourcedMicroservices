@@ -161,7 +161,7 @@ var Item = Backbone.Model.extend({
                                 }
                         });
 
-                        cmdItem.emit()  
+                        //cmdItem.emit()  
                     }
                 }
             });
@@ -270,7 +270,7 @@ var Item = Backbone.Model.extend({
                         }
                     });
 
-                    cmdItem.emit()
+                    //cmdItem.emit()
                 });
 
                 // emit it

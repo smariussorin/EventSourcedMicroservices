@@ -60,5 +60,5 @@ domain.init(function(err) {
         msgbus.emitEvent(evt);
     });
     
-    console.log('Starting domain service'.cyan);
+    console.log('Starting items domain service'.cyan);
 });
