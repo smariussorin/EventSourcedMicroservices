@@ -5,7 +5,7 @@ module.exports = require('cqrs-saga').defineSaga({
 },
 function (evt, saga, callback) {
   var userId =  evt.payload.id;
-  
+
   const itemsRepo = require('../viewBuilders/item/collection');
   itemsRepo.findViewModels({ userId: userId }, (err, vms) => {
     vms.forEach(function(entry) {
@@ -17,7 +17,8 @@ function (evt, saga, callback) {
       };
 
       saga.addCommandToSend(cmd);
-      saga.commit(callback);
     }); 
   });
+
+  saga.commit(callback);
 });
