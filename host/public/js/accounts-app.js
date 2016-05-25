@@ -22,22 +22,7 @@
 
     var accounts = new Accounts();
 
-var Item = Backbone.Model.extend({
-                    modelName: 'item', // so denormalizers can resolve events to model
-                    
-                    initialize: function() {
-                        // bind this model to get event updates - a lot of magic ;)
-                        // not more to do the model gets updated now
-                        this.bindCQRS(); 
-                    }
-                });
 
-                var Items = Backbone.Collection.extend({
-                    model: Item,
-                    url: '/allItems.json'
-                });
-
-                var items = new Items();  
     // Init Backbone.CQRS
     // ------------------
 
@@ -143,29 +128,6 @@ var Item = Backbone.Model.extend({
                     id: accountId
                 }
             });
-
-            // observe it
-            cmd.observe(function(event) {
-                console.log("Callback deleteAccount reveived event: " + event.name);
-
-                //need to fetch the apps again
-                for(var j = 0; j < app.items.length; j++)
-                {
-                    if(app.items.models[j].attributes.userId == accountId)
-                    {
-                        var cmdItem = new Backbone.CQRS.Command({
-                                id:_.uniqueId('msg'),
-                                command: 'deleteItem',
-                                payload: { 
-                                     id: app.items.models[j].id
-                                }
-                        });
-
-                        //cmdItem.emit()  
-                    }
-                }
-            });
-
             // emit it
             cmd.emit();
         },
@@ -256,23 +218,6 @@ var Item = Backbone.Model.extend({
                     }
                 });
 
-                // observe it
-                cmd.observe(function(event) {
-                    console.log("Callback createAccount reveived event: " + event.name);
-
-                    var accountId = event.attributes.payload.id;
-                    var cmdItem = new Backbone.CQRS.Command({
-                        id:_.uniqueId('msg'),
-                        command: 'createItem',
-                        payload: { 
-                            text: accountName + "_item",
-                            userId : accountId
-                        }
-                    });
-
-                    //cmdItem.emit()
-                });
-
                 // emit it
                 cmd.emit();
             }
@@ -300,9 +245,6 @@ var Item = Backbone.Model.extend({
     var init = function() {
         app.accounts = accounts;
         app.accounts.fetch();
-
-        app.items = items;
-        app.items.fetch();
 
         var indexView = new IndexView();
         indexView.render();
