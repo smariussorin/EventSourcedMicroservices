@@ -27,7 +27,8 @@ domain.defineCommand({
   name: 'command',
   aggregateId: 'payload.id',
   payload: 'payload',
-  revision: 'head.revision'
+  revision: 'head.revision',
+  meta: 'meta'
 });
 domain.defineEvent({
   correlationId: 'commandId',
@@ -35,7 +36,8 @@ domain.defineEvent({
   name: 'event',
   aggregateId: 'payload.id',
   payload: 'payload',
-  revision: 'head.revision'
+  revision: 'head.revision',
+  meta: 'meta'
 });
 
 domain.init(function(err) {

@@ -9,7 +9,8 @@ function (evt, saga, callback) {
         payload: {
             text : 'item_'+ evt.payload.email,
             userId: evt.payload.id
-        }
+        },
+        meta: evt.meta 
     };
 
     saga.addCommandToSend(cmd);

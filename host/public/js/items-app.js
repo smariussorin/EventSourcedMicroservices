@@ -124,7 +124,8 @@
                 command: 'deleteItem',
                 payload: { 
                     id: this.model.id
-                }
+                },
+                meta: "smarius.sorin@yahoo.com"
             });
 
             // emit it
@@ -155,7 +156,8 @@
                         id: this.model.id,
                         text: itemText,
                         userId : itemUserId
-                    }
+                    },
+                    meta: "smarius.sorin@yahoo.com"
                 });
 
                 // emit it
@@ -210,7 +212,8 @@
                     payload: { 
                         text: itemText,
                         userId : itemUserId
-                    }
+                    },
+                    meta: "smarius.sorin@yahoo.com"
                 });
 
                 // emit it

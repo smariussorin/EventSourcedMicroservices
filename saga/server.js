@@ -35,7 +35,8 @@ pm.defineEvent({
   name: 'event',
   aggregateId: 'payload.id',
   payload: 'payload',
-  revision: 'head.revision'
+  revision: 'head.revision',
+  meta: 'meta'
 });
 
 pm.defineCommand({
@@ -75,7 +76,8 @@ denormalizer.defineEvent({
     name: 'event',
     aggregateId: 'payload.id',
     payload: 'payload',
-    revision: 'head.revision'
+    revision: 'head.revision',
+    meta: 'meta'
 });
 
 denormalizer.init(function(err) {

@@ -62,7 +62,8 @@ viewmodel.read(options.repository, function(err, repository) {
       name: 'event',
       aggregateId: 'payload.id',
       payload: 'payload',
-      revision: 'head.revision'
+      revision: 'head.revision',
+      meta: 'meta'
     });
 
     console.log('2. -> eventdenormalizer'.cyan);

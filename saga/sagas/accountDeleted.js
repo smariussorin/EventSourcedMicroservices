@@ -13,7 +13,8 @@ function (evt, saga, callback) {
         command: 'deleteItem',
         payload: {
             id : entry.id,
-        }
+        },
+        meta: evt.meta
       };
 
       saga.addCommandToSend(cmd);

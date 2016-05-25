@@ -126,7 +126,8 @@
                 command: 'deleteAccount',
                 payload: { 
                     id: accountId
-                }
+                },
+                meta: "smarius.sorin@yahoo.com"
             });
             // emit it
             cmd.emit();
@@ -156,7 +157,8 @@
                         id: this.model.id,
                         name: accountName,
                         email : accountEmail
-                    }
+                    },
+                    meta: "smarius.sorin@yahoo.com"
                 });
 
                 cmd.observe(function(event) {
@@ -215,7 +217,8 @@
                     payload: { 
                         name: accountName,
                         email : accountEmail
-                    }
+                    },
+                    meta: "smarius.sorin@yahoo.com"
                 });
 
                 // emit it
