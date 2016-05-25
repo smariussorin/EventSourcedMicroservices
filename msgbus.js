@@ -1,9 +1,10 @@
 // the hub encapsulates functionality to send or receive messages from redis.
+var redisOptions = {
+    host: 'localhost',                          // optional
+}
 
 var redis = require('redis')
   , colors = require('./colors')
-  , cmd = redis.createClient()
-  , evt = redis.createClient()
   , evtSubscriptions = []
   , cmdSubscriptions = [];
 
