@@ -3,7 +3,8 @@
 // `node server.js` 
 var colors = require('../colors')
   , msgbus = require('../msgbus')
-  , eventDenormalizerConfig = require('../config/eventDenormalizer-config');
+  , eventDenormalizerConfig = require('../config/eventDenormalizer-config')
+  , sagaConfig = require('../config/saga-config');
 
 const pm = require('cqrs-saga')({
     sagaPath: __dirname + '/sagas',
@@ -32,18 +33,9 @@ const pm = require('cqrs-saga')({
     }
 });
 
-pm.defineEvent({
-  name: 'event',
-  aggregateId: 'payload.id',
-  payload: 'payload',
-  revision: 'head.revision',
-  meta: 'meta'
-});
+pm.defineEvent(sagaConfig.eventDefinition);
 
-pm.defineCommand({
-  id: 'id',
-  meta: 'meta'
-});
+pm.defineCommand(sagaConfig.commandDefinition);
 
 var eventDenormalizerOptions = {
     denormalizerPath: __dirname + '/viewBuilders',

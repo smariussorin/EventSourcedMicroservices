@@ -2,7 +2,8 @@
 //
 // `node server.js` 
 var colors = require('../colors')
-  , msgbus = require('../msgbus');
+  , msgbus = require('../msgbus')
+  , domainConfig = require('../config/domain-config');;
 
 
 var domain = require('cqrs-domain')({
@@ -11,7 +12,7 @@ var domain = require('cqrs-domain')({
         type: 'mongodb',
         host: 'localhost',                          // optional
         port: 27017,                                // optional
-        dbName: 'domain',                           // optional
+        dbName: 'domain-account',                   // optional
         eventsCollectionName: 'events',             // optional
         snapshotsCollectionName: 'snapshots',       // optional 
         transactionsCollectionName: 'transactions', // optional
@@ -19,26 +20,11 @@ var domain = require('cqrs-domain')({
       // authSource: 'authedicationDatabase',        // optional
         // username: 'technicalDbUser',                // optional
         // password: 'secret'                          // optional
-    }
+    },
 });
 
-domain.defineCommand({
-  id: 'id',
-  name: 'command',
-  aggregateId: 'payload.id',
-  payload: 'payload',
-  revision: 'head.revision',
-  meta: 'meta'
-});
-domain.defineEvent({
-  correlationId: 'commandId',
-  id: 'id',
-  name: 'event',
-  aggregateId: 'payload.id',
-  payload: 'payload',
-  revision: 'head.revision',
-  meta: 'meta'
-});
+domain.defineCommand(domainConfig.commandDefinition);
+domain.defineEvent(domainConfig.eventDefinition);
 
 domain.init(function(err) {
     if (err) {

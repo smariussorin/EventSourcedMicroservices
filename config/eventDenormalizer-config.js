@@ -1,3 +1,5 @@
+const commonConfig = require('./common-config');
+
 module.exports = {
     repository: {
         type: 'mongodb',
@@ -21,13 +23,5 @@ module.exports = {
         timeout: 10000                              // optional
         // password: 'secret'                          // optional
     },
-    eventDefinition : {
-        correlationId: 'commandId',
-        id: 'id',
-        name: 'event',
-        aggregateId: 'payload.id',
-        payload: 'payload',
-        revision: 'head.revision',
-        meta: 'meta'
-    }
+    eventDefinition : commonConfig.eventDefinition
 }
