@@ -12,14 +12,14 @@ const pm = require('cqrs-saga')({
         type: 'mongodb',
         host: 'localhost',                          // optional
         port: 27017,                                // optional
-        dbName: 'domain',                           // optional
+        dbName: 'domain-saga',                           // optional
         collectionName: 'sagas',             // optional
         timeout: 10000                              // optional
         // authSource: 'authedicationDatabase',        // optional
         // username: 'technicalDbUser',                // optional
         // password: 'secret'                          // optional
     },
-     revisionGuardStore: {
+    revisionGuardStore: {
         queueTimeout: 1000,                         // optional, timeout for non-handled events in the internal in-memory queue
         queueTimeoutMaxLoops: 3,                     // optional, maximal loop count for non-handled event in the internal in-memory queue
 
