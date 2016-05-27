@@ -86,10 +86,6 @@
     // Create Backbone Stuff
     // ---------------------
 
-    // view templates
-    var accountTemplate = _.template('<%= email %> <a class="deleteAccount" href="">delete</a> <a class="editAccount" href="">edit</a>');
-    var editAccountTemplate = _.template('<input id="newEmail" type="text" value="<%= email %>"></input><input id="newName" type="text" value="<%= name %>"></input><button id="changeAccount">save</button>');
-
     // views
     var AccountView = Backbone.View.extend({
         
@@ -172,9 +168,17 @@
 
         render: function() {
             if (this.model.editMode) {
-                $(this.el).html(editAccountTemplate(this.model.toJSON()));
+                var that=this;
+                $.get('/views/accounts/template/edit-item.jade', function (data) {
+                    template = _.template(data, that.model.toJSON());
+                    $(that.el).html(template);  
+                }, 'html');
             } else {
-                $(this.el).html(accountTemplate(this.model.toJSON()));
+                var that=this;
+                $.get('/views/accounts/template/item.jade', function (data) {
+                    template = _.template(data, that.model.toJSON());
+                    $(that.el).html(template);  
+                }, 'html');
             }
             return this;
         }, 

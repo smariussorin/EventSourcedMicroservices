@@ -86,10 +86,7 @@
     // Create Backbone Stuff
     // ---------------------
 
-    // view templates
-    var itemTemplate = _.template('<%= text %> <a class="deleteItem" href="">delete</a> <a class="editItem" href="">edit</a>');
-    var editItemTemplate = _.template('<input id="newText" type="text" value="<%= text %>"></input><input id="newUserId" type="text" value="<%= userId %>"></input><button id="changeItem">save</button>');
-
+  
     // views
     var ItemView = Backbone.View.extend({
         
@@ -167,9 +164,17 @@
 
         render: function() {
             if (this.model.editMode) {
-                $(this.el).html(editItemTemplate(this.model.toJSON()));
+                var that=this;
+                $.get('/views/items/template/edit-item.jade', function (data) {
+                    template = _.template(data, that.model.toJSON());
+                    $(that.el).html(template);  
+                }, 'html');
             } else {
-                $(this.el).html(itemTemplate(this.model.toJSON()));
+                var that=this;
+                $.get('/views/items/template/item.jade', function (data) {
+                    template = _.template(data, that.model.toJSON());
+                    $(that.el).html(template);  
+                }, 'html');
             }
             return this;
         }, 

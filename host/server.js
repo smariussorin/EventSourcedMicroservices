@@ -20,7 +20,7 @@ app.use(require('body-parser').json());
 app.use(express['static'](__dirname + '/public'));
 
 app.set('view engine', 'jade');
-app.set('views', __dirname + '/app/views');
+app.set('views', __dirname + '/public/views');
 
 
 // BOOTSTRAPPING
