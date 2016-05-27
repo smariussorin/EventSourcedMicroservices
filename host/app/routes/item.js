@@ -5,7 +5,7 @@ exports.actions = function(app, options, repository) {
     });
 	
     app.get('/items', function(req, res) {
-        res.render('../views/items/index');
+        res.render('../templates/item/index');
     });
         
     app.get('/allItems.json', function(req, res) { 

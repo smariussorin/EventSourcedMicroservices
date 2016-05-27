@@ -18,6 +18,7 @@ var app = express()
 
 app.use(require('body-parser').json());
 app.use(express['static'](__dirname + '/public'));
+app.use('/scripts', express.static(__dirname + '/node_modules'));
 
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/public/views');

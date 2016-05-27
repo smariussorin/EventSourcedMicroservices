@@ -1,28 +1,16 @@
-(function() {
-
-    // Create Backbone Model and Collection
-    // ------------------------------------
-
-    // model
-    var Item = Backbone.Model.extend({
-        modelName: 'item', // so denormalizers can resolve events to model
-        
-        initialize: function() {
-            // bind this model to get event updates - a lot of magic ;)
-            // not more to do the model gets updated now
-            this.bindCQRS(); 
-        }
-    });
-
-    // collection
-    var Items = Backbone.Collection.extend({
-        model: Item,
-        url: '/allItems.json'
-    });
-
-    var items = new Items();
-
-
+/*global define*/
+require([
+    'jquery',
+    'underscore',
+    'backbone',
+    'io',
+    'models/account',
+    'collections/account',
+    'text!templates/account/item.jade',
+    'text!templates/account/edit-item.jade',
+    'backboneCQRS',
+], function ($, _, Backbone, io, Account, Accounts, itemTemplate, editItemTemplate) {
+    'use strict';
     // Init Backbone.CQRS
     // ------------------
 
@@ -51,34 +39,33 @@
     });
 
 
-
     // Create a few EventDenormalizers
     // -------------------------------
 
-    // itemCreated event 
-    var itemCreateHandler = new Backbone.CQRS.EventDenormalizer({
+    // accountCreated event 
+    var accountCreateHandler = new Backbone.CQRS.EventDenormalizer({
         methode: 'create',
-        model: Item,
-        collection: items,
+        model: Account,
+        collection: Accounts,
 
         // bindings
-        forModel: 'item',
-        forEvent: 'itemCreated'
+        forModel: 'account',
+        forEvent: 'accountCreated'
     });
 
-    // itemChanged event
-    var itemChangedHandler = new Backbone.CQRS.EventDenormalizer({
-        forModel: 'item',
-        forEvent: 'itemChanged'
+    // accountChanged event
+    var accountChangedHandler = new Backbone.CQRS.EventDenormalizer({
+        forModel: 'account',
+        forEvent: 'accountChanged'
     });
 
-    // itemDeleted event 
-    var itemDeletedHandler = new Backbone.CQRS.EventDenormalizer({
+    // accountDeleted event 
+    var accountDeletedHandler = new Backbone.CQRS.EventDenormalizer({
         methode: 'delete',
 
         // bindings
-        forModel: 'item',
-        forEvent: 'itemDeleted'
+        forModel: 'account',
+        forEvent: 'accountDeleted'
     });
 
 
@@ -86,12 +73,14 @@
     // Create Backbone Stuff
     // ---------------------
 
-  
     // views
-    var ItemView = Backbone.View.extend({
+    var AccountView = Backbone.View.extend({
         
         tagName: 'li',
-        className: 'item',
+        className: 'account',
+
+        itemTemplate: _.template(itemTemplate),
+        editItemTemplate: _.template(editItemTemplate),
 
         initialize: function() {
             this.model.bind('change', this.render, this);
@@ -99,62 +88,67 @@
         },
 
         events: {
-            'click .editItem' : 'uiEditItem',
-            'click .deleteItem' : 'uiDeleteItem',
-            'click #changeItem' : 'uiChangeItem'
+            'click .editAccount' : 'uiEditAccount',
+            'click .deleteAccount' : 'uiDeleteAccount',
+            'click #changeAccount' : 'uiChangeAccount'
         },
 
         // render edit input
-        uiEditItem: function(e) {
+        uiEditAccount: function(e) {
             e.preventDefault();
             this.model.editMode = true;
             this.render();
         },
 
         // send deletePerson command with id
-        uiDeleteItem: function(e) {
+        uiDeleteAccount: function(e) {
             e.preventDefault();
+
+            var accountId = this.model.id;
 
             // CQRS command
             var cmd = new Backbone.CQRS.Command({
                 id:_.uniqueId('msg'),
-                command: 'deleteItem',
+                command: 'deleteAccount',
                 payload: { 
-                    id: this.model.id
+                    id: accountId
                 },
                 meta: "smarius.sorin@yahoo.com"
             });
-
             // emit it
             cmd.emit();
         },
 
-        // send changeItem command with new name
-        uiChangeItem: function(e) {
+        // send changeAccount command with new name
+        uiChangeAccount: function(e) {
             e.preventDefault();
 
-            var itemText = this.$('#newText').val();
-            var itemUserId = this.$('#newUserId').val();
+            var accountEmail = this.$('#newEmail').val();
+            var accountName  = this.$('#newName').val();
 
-            this.$('#newText').val('');
-            this.$('#newUserId').val('');
+            this.$('#newEmail').val('');
+            this.$('#newName').val('');
 
             this.model.editMode = false;
             this.render();
 
             //validation
-            if (itemText) {
+            if (accountName) {
 
                 // CQRS command
                 var cmd = new Backbone.CQRS.Command({
                     id:_.uniqueId('msg'),
-                    command: 'changeItem',
+                    command: 'changeAccount',
                     payload: { 
                         id: this.model.id,
-                        text: itemText,
-                        userId : itemUserId
+                        name: accountName,
+                        email : accountEmail
                     },
                     meta: "smarius.sorin@yahoo.com"
+                });
+
+                cmd.observe(function(event) {
+                    console.log("Callback deleteAccount reveived event: " + event.name);
                 });
 
                 // emit it
@@ -164,17 +158,9 @@
 
         render: function() {
             if (this.model.editMode) {
-                var that=this;
-                $.get('/views/items/template/edit-item.jade', function (data) {
-                    template = _.template(data, that.model.toJSON());
-                    $(that.el).html(template);  
-                }, 'html');
+                $(this.el).html(this.editItemTemplate(this.model.toJSON()));    
             } else {
-                var that=this;
-                $.get('/views/items/template/item.jade', function (data) {
-                    template = _.template(data, that.model.toJSON());
-                    $(that.el).html(template);  
-                }, 'html');
+                $(this.el).html(this.itemTemplate(this.model.toJSON()));  
             }
             return this;
         }, 
@@ -190,33 +176,33 @@
         el: '#index-view',
 
         initialize: function() {
-            _.bindAll(this, 'addItem');
+            _.bindAll(this, 'addAccount');
 
-            this.collection = app.items;
+            this.collection = app.accounts;
             this.collection.bind('reset', this.render, this);
-            this.collection.bind('add', this.addItem, this);
+            this.collection.bind('add', this.addAccount, this);
         },
 
         events: {
-            'click #addItem' : 'uiAddItem'
+            'click #addAccount' : 'uiAddAccount'
         },
 
         // send createPerson command
-        uiAddItem: function(e) {
+        uiAddAccount: function(e) {
             e.preventDefault();  
 
-            var itemText = this.$('#newItemText').val();
-            var itemUserId = this.$('#newItemUserId').val();
+            var accountEmail = this.$('#newAccountEmail').val();
+            var accountName = this.$('#newAccountName').val();
 
-            if (itemText) {
+            if (accountName) {
 
                 // CQRS command
                 var cmd = new Backbone.CQRS.Command({
                     id:_.uniqueId('msg'),
-                    command: 'createItem',
+                    command: 'createAccount',
                     payload: { 
-                        text: itemText,
-                        userId : itemUserId
+                        name: accountName,
+                        email : accountEmail
                     },
                     meta: "smarius.sorin@yahoo.com"
                 });
@@ -225,17 +211,17 @@
                 cmd.emit();
             }
 
-            this.$('#newItemText').val('');
-            this.$('#newItemUserId').val('');
+            this.$('#newAccountName').val('');
+            this.$('#newAccountEmail').val('');
         },
 
         render: function() {
-            this.collection.each(this.addItem);
+            this.collection.each(this.addAccount);
         },
 
-        addItem: function(item) {
-            var view = new ItemView({model: item});
-            this.$('#items').append(view.render().el);
+        addAccount: function(account) {
+            var view = new AccountView({model: account});
+            this.$('#accounts').append(view.render().el);
         }
 
     });
@@ -246,8 +232,8 @@
 
     var app = {};
     var init = function() {
-        app.items = items;
-        app.items.fetch();
+        app.accounts = Accounts;
+        app.accounts.fetch();
 
         var indexView = new IndexView();
         indexView.render();
@@ -256,4 +242,5 @@
     // kick things off
     $(init);
 
-})();
+    return app;
+});

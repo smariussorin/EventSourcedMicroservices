@@ -5,7 +5,7 @@ exports.actions = function(app, options, repository) {
     });
 	
     app.get('/accounts', function(req, res) {
-        res.render('../views/accounts/index');
+        res.render('../templates/account/index');
     });
         
     app.get('/allAccounts.json', function(req, res) { 
