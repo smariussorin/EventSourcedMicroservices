@@ -29,7 +29,7 @@ require.config({
 		jquery: 'scripts/jquery/dist/jquery',
 		underscore: 'scripts/underscore/underscore',
 		backbone: 'scripts/backbone/backbone',
-		backboneCQRS: 'js/lib/backboneCQRS/backboneCQRS-0.4',
+		backboneCQRS: 'lib/backboneCQRS/backboneCQRS-0.4',
 		text: 'scripts/requirejs-text/text',
 		io: 'http://localhost:3000/socket.io/socket.io.js'
 	}
