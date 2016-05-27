@@ -2,7 +2,8 @@
 //
 // `node server.js` 
 var colors = require('../colors')
-  , msgbus = require('../msgbus');
+  , msgbus = require('../msgbus')
+  , eventDenormalizerConfig = require('../config/eventDenormalizer-config');
 
 const pm = require('cqrs-saga')({
     sagaPath: __dirname + '/sagas',
@@ -44,41 +45,15 @@ pm.defineCommand({
   meta: 'meta'
 });
 
-const denormalizer = require('cqrs-eventdenormalizer')({
+var eventDenormalizerOptions = {
     denormalizerPath: __dirname + '/viewBuilders',
-    repository: {
-        type: 'mongodb',
-        host: 'localhost',                          // optional
-        port: 27017,                                // optional
-        dbName: 'readmodel',                        // optional
-        timeout: 10000                              // optional
-      // authSource: 'authedicationDatabase',        // optional
-        // username: 'technicalDbUser',                // optional
-        // password: 'secret'                          // optional
-    },
-    revisionGuardStore: {
-        queueTimeout: 1000,                         // optional, timeout for non-handled events in the internal in-memory queue
-        queueTimeoutMaxLoops: 3,                     // optional, maximal loop count for non-handled event in the internal in-memory queue
+    repository: eventDenormalizerConfig.repository,
+    revisionGuardStore: eventDenormalizerConfig.revisionGuardStore
+};
 
-        type: 'redis',
-        host: 'localhost',                          // optional
-        port: 6379,                                 // optional
-        db: 0,                                      // optional
-        prefix: 'readmodel_revision',               // optional
-        timeout: 10000                              // optional
-        // password: 'secret'                          // optional
-    }
-});
+const denormalizer = require('cqrs-eventdenormalizer')(eventDenormalizerOptions);
 
-denormalizer.defineEvent({
-    correlationId: 'commandId',
-    id: 'id',
-    name: 'event',
-    aggregateId: 'payload.id',
-    payload: 'payload',
-    revision: 'head.revision',
-    meta: 'meta'
-});
+denormalizer.defineEvent(eventDenormalizerConfig.eventDefinition);
 
 denormalizer.init(function(err) {
     if(err) {

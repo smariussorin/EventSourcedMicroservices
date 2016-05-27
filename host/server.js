@@ -5,7 +5,8 @@ var express = require('express')
   , http = require('http')
   , colors = require('../colors')
   , socket = require('socket.io')
-  , viewmodel = require('viewmodel');
+  , viewmodel = require('viewmodel')
+  , eventDenormalizerConfig = require('../config/eventDenormalizer-config');
 
 // create an configure:
 //
@@ -25,46 +26,18 @@ app.set('views', __dirname + '/app/views');
 // BOOTSTRAPPING
 console.log('\nBOOTSTRAPPING:'.cyan);
 
-var options = {
+var eventDenormalizerOptions = {
     denormalizerPath: __dirname + '/viewBuilders',
-    repository: {
-        type: 'mongodb',
-        host: 'localhost',                          // optional
-        port: 27017,                                // optional
-        dbName: 'readmodel',                        // optional
-        timeout: 10000                              // optional
-      // authSource: 'authedicationDatabase',        // optional
-        // username: 'technicalDbUser',                // optional
-        // password: 'secret'                          // optional
-    },
-    revisionGuardStore: {
-        queueTimeout: 1000,                         // optional, timeout for non-handled events in the internal in-memory queue
-        queueTimeoutMaxLoops: 3,                     // optional, maximal loop count for non-handled event in the internal in-memory queue
-
-        type: 'redis',
-        host: 'localhost',                          // optional
-        port: 6379,                                 // optional
-        db: 0,                                      // optional
-        prefix: 'readmodel_revision',               // optional
-        timeout: 10000                              // optional
-        // password: 'secret'                          // optional
-    }
+    repository: eventDenormalizerConfig.repository,
+    revisionGuardStore: eventDenormalizerConfig.revisionGuardStore
 };
 
 console.log('1. -> viewmodel'.cyan);
-viewmodel.read(options.repository, function(err, repository) {
+viewmodel.read(eventDenormalizerOptions.repository, function(err, repository) {
 
-    var eventDenormalizer = require('cqrs-eventdenormalizer')(options);
+    var eventDenormalizer = require('cqrs-eventdenormalizer')(eventDenormalizerOptions);
     
-    eventDenormalizer.defineEvent({
-      correlationId: 'commandId',
-      id: 'id',
-      name: 'event',
-      aggregateId: 'payload.id',
-      payload: 'payload',
-      revision: 'head.revision',
-      meta: 'meta'
-    });
+    eventDenormalizer.defineEvent(eventDenormalizerConfig.eventDefinition);
 
     console.log('2. -> eventdenormalizer'.cyan);
     eventDenormalizer.init(function(err) {
@@ -73,7 +46,7 @@ viewmodel.read(options.repository, function(err, repository) {
         }
 
         console.log('3. -> routes'.cyan);
-        require('./app/routes').actions(app, options, repository);
+        require('./app/routes').actions(app, eventDenormalizerOptions, repository);
 
         console.log('4. -> message bus'.cyan);
         var msgbus = require('../msgbus');
