@@ -1,5 +1,3 @@
-FORKED FROM https://github.com/adrai/cqrs-sample
-
 ## Introduction
 
 This is a sample implementation of Microservices CQRS / Eventsourcing Infrastructure in node.js using:
