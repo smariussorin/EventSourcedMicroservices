@@ -6,11 +6,11 @@ module.exports = require('cqrs-saga').defineSaga({
 function (evt, saga, callback) {
   var userId =  evt.payload.id;
 
-  const itemsRepo = require('../viewBuilders/item/collection');
-  itemsRepo.findViewModels({ userId: userId }, (err, vms) => {
+  const ordersRepo = require('../viewBuilders/order/collection');
+  ordersRepo.findViewModels({ userId: userId }, (err, vms) => {
     vms.forEach(function(entry) {
       var cmd = {
-        command: 'deleteItem',
+        command: 'deleteOrder',
         payload: {
             id : entry.id,
         },

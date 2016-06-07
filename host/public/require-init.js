@@ -24,6 +24,21 @@ require.config({
 		io: {
 			exports: 'io'
 		},
+		datatablesBootstrap: {
+			deps: [
+				'datatablesPagination'
+			]
+		},
+		datatablesPagination: {
+			deps: [
+				'datatables',
+			]
+		},
+		jqueryDateFormat: {
+			deps: [
+				'jquery',
+			]
+		},
 	},
 	paths: {
 		jquery: 'scripts/jquery/dist/jquery',
@@ -31,6 +46,10 @@ require.config({
 		backbone: 'scripts/backbone/backbone',
 		backboneCQRS: 'lib/backboneCQRS/backboneCQRS-0.4',
 		text: 'scripts/requirejs-text/text',
-		io: 'http://localhost:3000/socket.io/socket.io.js'
+		datatables: 'assets/js/vendor/datatables/js/jquery.dataTables.min',
+		datatablesBootstrap: 'assets/js/vendor/datatables/extensions/dataTables.bootstrap',
+		datatablesPagination: 'assets/js/vendor/datatables/extensions/Pagination/input',
+		jqueryDateFormat: 'assets/js/vendor/date-format/jquery-dateFormat.min',
+		io: 'socket.io/socket.io.js'
 	}
 });

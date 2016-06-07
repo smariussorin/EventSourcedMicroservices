@@ -1,0 +1,25 @@
+{
+  "title": "createOrder",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "command": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      },
+      "required": ["text", "userId"]
+    }
+  },
+  "required": ["id", "command", "payload"]
+}

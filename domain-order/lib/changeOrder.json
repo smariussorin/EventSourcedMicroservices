@@ -1,0 +1,28 @@
+{
+  "title": "changeOrder",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "command": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "text", "userId"]
+    }
+  },
+  "required": ["id", "command", "payload"]
+}
