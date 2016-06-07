@@ -13,6 +13,6 @@ function (evt, saga, callback) {
         meta: evt.meta 
     };
 
-    saga.addCommandToSend(cmd);
-    saga.commit(callback);
+    //saga.addCommandToSend(cmd);
+    //saga.commit(callback);
 });
