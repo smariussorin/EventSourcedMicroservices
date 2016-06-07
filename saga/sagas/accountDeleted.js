@@ -17,9 +17,9 @@ function (evt, saga, callback) {
         meta: evt.meta
       };
 
-      saga.addCommandToSend(cmd);
+      //saga.addCommandToSend(cmd);
     }); 
   });
 
-  saga.commit(callback);
+  //saga.commit(callback);
 });
