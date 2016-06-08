@@ -6,7 +6,7 @@ var colors = require('../colors')
   , eventDenormalizerConfig = require('../config/eventDenormalizer-config')
   , sagaConfig = require('../config/saga-config');
 
-const pm = require('cqrs-saga')({
+const saga = require('cqrs-saga')({
     sagaPath: __dirname + '/sagas',
     sagaStore: {
         type: 'mongodb',
@@ -33,9 +33,9 @@ const pm = require('cqrs-saga')({
     }
 });
 
-pm.defineEvent(sagaConfig.eventDefinition);
+saga.defineEvent(sagaConfig.eventDefinition);
 
-pm.defineCommand(sagaConfig.commandDefinition);
+saga.defineCommand(sagaConfig.commandDefinition);
 
 var eventDenormalizerOptions = {
     denormalizerPath: __dirname + '/viewBuilders',
@@ -52,7 +52,7 @@ denormalizer.init(function(err) {
         console.log(err);
     }
 
-    pm.init(function(err) {
+    saga.init(function(err) {
         if (err) {
             return console.log(err);
         }
@@ -70,13 +70,13 @@ denormalizer.init(function(err) {
             });
         });
 
-        pm.onCommand(function(cmd){
+        saga.onCommand(function(cmd){
             console.log('saga: ' + cmd.command);
             msgbus.emitCommand(cmd);
         })
 
         denormalizer.defaultEventExtension((evt, callback) => {
-            pm.handle(evt, (err) => {
+            saga.handle(evt, (err) => {
                 callback(err, evt);
             });
         });
