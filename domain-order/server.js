@@ -3,9 +3,26 @@
 // `node server.js` 
 var colors = require('../colors')
   , msgbus = require('../msgbus')
+  , log4js = require('log4js')
   , domainConfig = require('../config/domain-config');;
 
+//configurate logger
+log4js.configure({
+    appenders: [
+        {
+            type: 'console'
+        },
+        {
+            type: 'log4js-node-mongodb',
+            connectionString: 'localhost:27017/logs',
+            category: 'order'
+        }
+    ]
+});
 
+var logger = log4js.getLogger('order');
+
+//configurate domain
 var domain = require('cqrs-domain')({
     domainPath: __dirname + '/lib',
     eventStore: {
@@ -28,25 +45,25 @@ domain.defineEvent(domainConfig.eventDefinition);
 
 domain.init(function(err) {
     if (err) {
-        return console.log(err);
+        return logger.error(err);
     }
 
     // on receiving a message (__=command__) from msgbus pass it to 
     // the domain calling the handle function
     msgbus.onCommand(function(cmd) {
-        console.log(colors.blue('\ndomain -- received command ' + cmd.command + ' from redis:'));
-        console.log(cmd);
+        logger.info(colors.blue('\ndomain -- received command ' + cmd.command + ' from redis:'));
+        logger.info(cmd);
     
-        console.log(colors.cyan('\n-> handle command ' + cmd.command));
+        logger.info(colors.cyan('\n-> handle command ' + cmd.command));
         
         domain.handle(cmd);
     });
 
     // on receiving a message (__=event) from domain pass it to the msgbus
     domain.onEvent(function(evt) {
-        console.log('domain: ' + evt.event);
+        logger.info('domain: ' + evt.event);
         msgbus.emitEvent(evt);
     });
     
-    console.log('Starting orders domain service'.cyan);
+    logger.trace('Starting orders domain service'.cyan);
 });

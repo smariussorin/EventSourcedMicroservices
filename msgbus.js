@@ -6,16 +6,34 @@ var redisOptions = {
 
 var redis = require('redis')
   , colors = require('./colors')
+  , log4js = require('log4js')
   , cmd = redis.createClient(redisOptions)
   , evt = redis.createClient(redisOptions)
   , evtSubscriptions = []
   , cmdSubscriptions = [];
 
+//configurate logger
+log4js.configure({
+    appenders: [
+        {
+            type: 'console'
+        },
+        {
+            type: 'log4js-node-mongodb',
+            connectionString: 'localhost:27017/logs',
+            category: 'message-bus'
+        }
+    ]
+});
+
+var logger = log4js.getLogger('message-bus');
+
+//configurate
 module.exports = {
 
     emitCommand: function(command) {
-        console.log(colors.blue('\nhub -- publishing command ' + command.command + ' to redis:'));
-        console.log(command);
+        logger.trace(colors.blue('\nhub -- publishing command ' + command.command + ' to redis:'));
+        logger.trace(command);
         cmd.publish('commands', JSON.stringify(command));
     },
 
@@ -25,12 +43,12 @@ module.exports = {
             cmd.subscribe('commands');
         }
         cmdSubscriptions.push(callback);
-        console.log(colors.blue('hub -- command subscribers: ' + cmdSubscriptions.length));
+        logger.trace(colors.blue('hub -- command subscribers: ' + cmdSubscriptions.length));
     },
 
     emitEvent: function(event) {
-        console.log(colors.blue('\nhub -- publishing event ' + event.event + ' to redis:'));
-        console.log(event);
+        logger.trace(colors.blue('\nhub -- publishing event ' + event.event + ' to redis:'));
+        logger.trace(event);
         evt.publish('events', JSON.stringify(event));
     },
 
@@ -40,7 +58,7 @@ module.exports = {
             evt.subscribe('events');
         }
         evtSubscriptions.push(callback);
-        console.log(colors.blue('hub -- event subscribers: ' + evtSubscriptions.length));
+        logger.trace(colors.blue('hub -- event subscribers: ' + evtSubscriptions.length));
     }
 
 };
@@ -52,8 +70,8 @@ evt.on('message', function(channel, message) {
 
     if (channel === 'events') {
 
-        console.log(colors.green('\nhub -- received event ' + event.event + ' from redis:'));
-        console.log(event);
+        logger.trace(colors.green('\nhub -- received event ' + event.event + ' from redis:'));
+        logger.trace(event);
         
         evtSubscriptions.forEach(function(subscriber){
             subscriber(event);
@@ -69,8 +87,8 @@ cmd.on('message', function(channel, message) {
 
     if (channel === 'commands') {
 
-        console.log(colors.green('\nhub -- received command ' + command.command + ' from redis:'));
-        console.log(command);
+        logger.trace(colors.green('\nhub -- received command ' + command.command + ' from redis:'));
+        logger.trace(command);
         
         cmdSubscriptions.forEach(function(subscriber){
             subscriber(command);

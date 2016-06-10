@@ -4,9 +4,26 @@
 var express = require('express')
   , http = require('http')
   , colors = require('../colors')
+  , log4js = require('log4js')
   , socket = require('socket.io')
   , viewmodel = require('viewmodel')
   , eventDenormalizerConfig = require('../config/eventDenormalizer-config');
+
+//configurate logger
+log4js.configure({
+    appenders: [
+        {
+            type: 'console'
+        },
+        {
+            type: 'log4js-node-mongodb',
+            connectionString: 'localhost:27017/logs',
+            category: 'host'
+        }
+    ]
+});
+
+var logger = log4js.getLogger('host');
 
 // create an configure:
 //
@@ -25,7 +42,7 @@ app.set('views', __dirname + '/public/views');
 
 
 // BOOTSTRAPPING
-console.log('\nBOOTSTRAPPING:'.cyan);
+logger.trace('\nBOOTSTRAPPING:'.cyan);
 
 var eventDenormalizerOptions = {
     denormalizerPath: __dirname + '/viewBuilders',
@@ -33,30 +50,30 @@ var eventDenormalizerOptions = {
     revisionGuardStore: eventDenormalizerConfig.revisionGuardStore
 };
 
-console.log('1. -> viewmodel'.cyan);
+logger.trace('1. -> viewmodel'.cyan);
 viewmodel.read(eventDenormalizerOptions.repository, function(err, repository) {
 
     var eventDenormalizer = require('cqrs-eventdenormalizer')(eventDenormalizerOptions);
     
     eventDenormalizer.defineEvent(eventDenormalizerConfig.eventDefinition);
 
-    console.log('2. -> eventdenormalizer'.cyan);
+    logger.trace('2. -> eventdenormalizer'.cyan);
     eventDenormalizer.init(function(err) {
         if(err) {
-            console.log(err);
+            logger.error(err);
         }
 
-        console.log('3. -> routes'.cyan);
+        logger.trace('3. -> routes'.cyan);
         require('./app/routes').actions(app, eventDenormalizerOptions, repository);
 
-        console.log('4. -> message bus'.cyan);
+        logger.trace('4. -> message bus'.cyan);
         var msgbus = require('../msgbus');
 
         // on receiving an __event__ from redis via the hub module:
         //
         // - let it be handled from the eventDenormalizer to update the viewmodel storage
         msgbus.onEvent(function(data) {
-            console.log(colors.cyan('eventDenormalizer -- denormalize event ' + data.event));
+            logger.info(colors.cyan('eventDenormalizer -- denormalize event ' + data.event));
             eventDenormalizer.handle(data);
         });
 
@@ -64,7 +81,7 @@ viewmodel.read(eventDenormalizerOptions.repository, function(err, repository) {
         //
         // - forward it to connected browsers via socket.io
         eventDenormalizer.onEvent(function(evt) {
-            console.log(colors.magenta('\nsocket.io -- publish event ' + evt.event + ' to browser'));
+            logger.info(colors.magenta('\nsocket.io -- publish event ' + evt.event + ' to browser'));
             io.sockets.emit('events', evt);
         });
 
@@ -73,11 +90,11 @@ viewmodel.read(eventDenormalizerOptions.repository, function(err, repository) {
         // on receiving __commands__ from browser via socket.io emit them on the ĥub module (which will 
         // forward it to message bus (redis pubsub))
         io.sockets.on('connection', function(socket) {
-            console.log(colors.magenta(' -- connects to socket.io'));
+            logger.trace(colors.magenta(' -- connects to socket.io'));
             
             socket.on('commands', function(data) {
-                console.log(colors.magenta('\n -- sends command ' + data.command + ':'));
-                console.log(data);
+                logger.info(colors.magenta('\n -- sends command ' + data.command + ':'));
+                logger.info(data);
 
                 msgbus.emitCommand(data);
             });
@@ -85,7 +102,7 @@ viewmodel.read(eventDenormalizerOptions.repository, function(err, repository) {
 
         // START LISTENING
         var port = 3000;
-        console.log(colors.cyan('\nStarting server on port ' + port));
+        logger.trace(colors.cyan('\nStarting server on port ' + port));
         server.listen(port);
     });
 });

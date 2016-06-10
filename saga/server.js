@@ -3,9 +3,27 @@
 // `node server.js` 
 var colors = require('../colors')
   , msgbus = require('../msgbus')
+  , log4js = require('log4js')
   , eventDenormalizerConfig = require('../config/eventDenormalizer-config')
   , sagaConfig = require('../config/saga-config');
 
+//configurate logger
+log4js.configure({
+    appenders: [
+        {
+            type: 'console'
+        },
+        {
+            type: 'log4js-node-mongodb',
+            connectionString: 'localhost:27017/logs',
+            category: 'saga-account'
+        }
+    ]
+});
+
+var logger = log4js.getLogger('saga-account');
+
+//configurate saga
 const saga = require('cqrs-saga')({
     sagaPath: __dirname + '/sagas',
     sagaStore: {
@@ -49,29 +67,29 @@ denormalizer.defineEvent(eventDenormalizerConfig.eventDefinition);
 
 denormalizer.init(function(err) {
     if(err) {
-        console.log(err);
+        logger.error(err);
     }
 
     saga.init(function(err) {
         if (err) {
-            return console.log(err);
+            return logger.error(err);
         }
 
         msgbus.onEvent(function(evt) {
-            console.log(colors.blue('\nsaga -- received event ' + evt.event + ' from redis:'));
-            console.log(evt);
+            logger.info(colors.blue('\nsaga -- received event ' + evt.event + ' from redis:'));
+            logger.info(evt);
         
-            console.log(colors.cyan('\n-> handle event ' + evt.event));
+            logger.info(colors.cyan('\n-> handle event ' + evt.event));
             
             denormalizer.handle(evt, (errs) => {
                 if (errs) {
-                  console.error(errs);
+                  logger.error(errs);
                 }
             });
         });
 
         saga.onCommand(function(cmd){
-            console.log('saga: ' + cmd.command);
+            logger.info('saga: ' + cmd.command);
             msgbus.emitCommand(cmd);
         })
 
@@ -81,7 +99,7 @@ denormalizer.init(function(err) {
             });
         });
 
-        console.log('Starting saga service'.cyan);
+        logger.trace('Starting saga service'.cyan);
     });
 });
 

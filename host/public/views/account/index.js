@@ -87,6 +87,7 @@ require([
                 },
                 meta: "smarius.sorin@yahoo.com"
             });
+            
             // emit it
             cmd.emit();
         },
@@ -117,10 +118,6 @@ require([
                         email : accountEmail
                     },
                     meta: "smarius.sorin@yahoo.com"
-                });
-
-                cmd.observe(function(event) {
-                    console.log("Callback deleteAccount reveived event: " + event.name);
                 });
 
                 // emit it
