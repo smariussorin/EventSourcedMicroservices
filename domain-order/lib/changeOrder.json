@@ -14,14 +14,29 @@
         "id": {
           "type": "string"
         },
-        "text": {
+        "date": {
+          "type": "string", "format": "date" 
+        },
+        "placedby": {
           "type": "string"
         },
-        "userId": {
+        "status": {
           "type": "string"
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "total": {
+          "type": "number"
+        },
+        "shipto": {
+          "type": "string"
+        },
+        "selected": {
+          "type": "boolean"
         }
       },
-      "required": ["id", "text", "userId"]
+      "required": ["id", "date", "placedby", "status", "quantity", "total", "shipto", "selected"]
     }
   },
   "required": ["id", "command", "payload"]

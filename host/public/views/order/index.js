@@ -51,9 +51,9 @@ require([
   
     // views
     var OrderView = Backbone.View.extend({
-        
-        tagName: 'li',
-        className: 'order',
+
+        el: '#orders-list',
+        tagName: 'tr',
 
         itemTemplate: _.template(itemTemplate),
         editItemTemplate: _.template(editItemTemplate),
@@ -128,11 +128,85 @@ require([
         },
 
         render: function() {
-            if (this.model.editMode) {
-                $(this.el).html(this.editItemTemplate(this.model.toJSON()));    
-            } else {
-                $(this.el).html(this.itemTemplate(this.model.toJSON()));  
-            }
+
+                //initialize datatable
+            $('#orders-list').DataTable({
+                "dom": '<"row"<"col-md-8 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"pull-right"f>>>t<"row"<"col-md-4 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"inline-controls text-center"i>><"col-md-4 col-sm-12"p>>',
+                "language": {
+                "sLengthMenu": 'View _MENU_ records',
+                "sInfo":  'Found _TOTAL_ records',
+                "oPaginate": {
+                    "sPage":    "Page ",
+                    "sPageOf":  "of",
+                    "sNext":  '<i class="fa fa-angle-right"></i>',
+                    "sPrevious":  '<i class="fa fa-angle-left"></i>'
+                }
+                },
+                "pagingType": "input",
+                "data": App.orders,
+                "order": [[ 1, "asc" ]],
+                "columns": [
+                {
+                    "data": "null",
+                    "defaultContent": '<label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0"><input type="checkbox" class="selectMe"><i></i></label>'
+                },
+                { "data": "id" },
+                {
+                    "data": "date",
+                    "className": "formatDate"
+                },
+                { "data": "placedby" },
+                {
+                    "type": "html",
+                    "data": "status",
+                    "render": function (data) {
+                        if (data === 'sent') {
+                            return '<span class="label bg-success">' + data + '</span>'
+                        } else if (data === 'closed') {
+                            return '<span class="label bg-warning">' + data + '</span>'
+                        } else if (data === 'cancelled') {
+                            return '<span class="label bg-lightred">' + data + '</span>'
+                        } else if (data === 'pending') {
+                            return '<span class="label bg-primary">' + data + '</span>'
+                        }
+                    }
+                },
+                { "data": "shipto" },
+                { "data": "quantity" },
+                {
+                    "data": "total",
+                    "type": "num-fmt",
+                    "render": function (data) {
+                        return '$' + parseFloat(data).toFixed(2);
+                    }
+                },
+                {
+                    "data": null,
+                    "defaultContent": '<a href="shop-single-order" class="btn btn-xs btn-default mr-5"><i class="fa fa-search"></i> View</a><a class="btn btn-xs btn-lightred"><i class="fa fa-times deleteOrder"></i> Delete</a>'
+                }
+                ],
+                "aoColumnDefs": [
+                { 'bSortable': false, 'aTargets': [ "no-sort" ] }
+                ],
+                "drawCallback": function(settings, json) {
+                    $(".formatDate").each(function (idx, elem) {
+                        $(elem).text($.format.date($(elem).text(), "MMM d, yyyy"));
+                    });
+                    $('#select-all').change(function() {
+                        if ($(this).is(":checked")) {
+                            $('#orders-list tbody .selectMe').prop('checked', true);
+                        } else {
+                            $('#orders-list tbody .selectMe').prop('checked', false);
+                        }
+                    });
+                }
+            });
+
+            //if (this.model.editMode) {
+               // $(this.el).html(this.editItemTemplate(this.model.toJSON()));    
+            //} else {
+               // $(this.el).html(this.itemTemplate(this.model.toJSON()));  
+            //}
             return this;
         }, 
 
@@ -144,7 +218,7 @@ require([
 
     var IndexView =  Backbone.View.extend({
 
-        el: '#index-view',
+        el: '#orders-list',
 
         initialize: function() {
             _.bindAll(this, 'addOrder');
@@ -192,83 +266,10 @@ require([
 
         addOrder: function(order) {
             var view = new OrderView({model: order});
-            this.$('#orders').append(view.render().el);
+            this.$('#orders-list').append(view.render().el);
         }
 
     });
-
-    //initialize datatable
-    $('#orders-list').DataTable({
-        "dom": '<"row"<"col-md-8 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"pull-right"f>>>t<"row"<"col-md-4 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"inline-controls text-center"i>><"col-md-4 col-sm-12"p>>',
-        "language": {
-        "sLengthMenu": 'View _MENU_ records',
-        "sInfo":  'Found _TOTAL_ records',
-        "oPaginate": {
-            "sPage":    "Page ",
-            "sPageOf":  "of",
-            "sNext":  '<i class="fa fa-angle-right"></i>',
-            "sPrevious":  '<i class="fa fa-angle-left"></i>'
-        }
-        },
-        "pagingType": "input",
-        "ajax": 'assets/extras/orders.json',
-        "order": [[ 1, "asc" ]],
-        "columns": [
-        {
-            "data": "null",
-            "defaultContent": '<label class="checkbox checkbox-custom-alt checkbox-custom-sm m-0"><input type="checkbox" class="selectMe"><i></i></label>'
-        },
-        { "data": "id" },
-        {
-            "data": "date",
-            "className": "formatDate"
-        },
-        { "data": "placedby" },
-        {
-            "type": "html",
-            "data": "status",
-            "render": function (data) {
-                if (data === 'sent') {
-                    return '<span class="label bg-success">' + data + '</span>'
-                } else if (data === 'closed') {
-                    return '<span class="label bg-warning">' + data + '</span>'
-                } else if (data === 'cancelled') {
-                    return '<span class="label bg-lightred">' + data + '</span>'
-                } else if (data === 'pending') {
-                    return '<span class="label bg-primary">' + data + '</span>'
-                }
-            }
-        },
-        { "data": "shipto" },
-        { "data": "quantity" },
-        {
-            "data": "total",
-            "type": "num-fmt",
-            "render": function (data) {
-                return '$' + parseFloat(data).toFixed(2);
-            }
-        },
-        {
-            "data": null,
-            "defaultContent": '<a href="shop-single-order" class="btn btn-xs btn-default mr-5"><i class="fa fa-search"></i> View</a><a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>'
-        }
-        ],
-        "aoColumnDefs": [
-        { 'bSortable': false, 'aTargets': [ "no-sort" ] }
-        ],
-        "drawCallback": function(settings, json) {
-        $(".formatDate").each(function (idx, elem) {
-            $(elem).text($.format.date($(elem).text(), "MMM d, yyyy"));
-        });
-        $('#select-all').change(function() {
-            if ($(this).is(":checked")) {
-                $('#orders-list tbody .selectMe').prop('checked', true);
-            } else {
-                $('#orders-list tbody .selectMe').prop('checked', false);
-            }
-        });
-        }
-        });
 
     // Bootstrap Backbone
     // ------------------
