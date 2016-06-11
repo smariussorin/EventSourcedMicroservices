@@ -1,0 +1,37 @@
+{
+  "title": "changeCategory",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "command": {
+      "type": "string"
+    },
+    "aggregate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["name"]
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "parent": {
+          "type": "boolean"
+        },
+        "parentId": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "parent", "parentId"]
+    }
+  },
+  "required": ["id", "command", "payload"]
+}
