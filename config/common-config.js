@@ -17,6 +17,7 @@ module.exports = {
         id: 'id',
         name: 'event',
         aggregateId: 'payload.id',
+        aggregate: 'aggregate.name',
         payload: 'payload',
         revision: 'head.revision',
         meta: 'meta'
@@ -25,6 +26,7 @@ module.exports = {
         id: 'id',
         name: 'command',
         aggregateId: 'payload.id',
+        aggregate: 'aggregate.name',
         payload: 'payload',
         revision: 'head.revision',
         meta: 'meta'

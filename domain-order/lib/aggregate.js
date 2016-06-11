@@ -6,5 +6,8 @@ module.exports = require('cqrs-domain').defineAggregate({
   defaultCommandPayload: 'payload',
   
   // optional, default ''
-  defaultEventPayload: 'payload'
+  defaultEventPayload: 'payload',
+
+  // optional, default ''
+  defaultPreConditionPayload: 'payload',
 });

@@ -6,6 +6,9 @@ module.exports = require('cqrs-saga').defineSaga({
 function (evt, saga, callback) {
     var cmd = {
         command: 'createOrder',
+        aggregate: { 
+          name: 'order'
+        },
         payload: {
           date: "2013-06-26T07:15:32.914Z",
           placedby : "Marlon Hancock "+ evt.payload.email,

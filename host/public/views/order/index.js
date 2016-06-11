@@ -84,6 +84,9 @@ require([
             var cmd = new Backbone.CQRS.Command({
                 id:_.uniqueId('msg'),
                 command: 'deleteOrder',
+                aggregate: { 
+                    name: 'order'
+                },
                 payload: { 
                     id: this.model.id
                 },
@@ -114,6 +117,9 @@ require([
                 var cmd = new Backbone.CQRS.Command({
                     id:_.uniqueId('msg'),
                     command: 'changeOrder',
+                    aggregate: { 
+                        name: 'order'
+                    },
                     payload: { 
                         id: this.model.id,
                         text: orderText,
@@ -245,6 +251,9 @@ require([
                 var cmd = new Backbone.CQRS.Command({
                     id:_.uniqueId('msg'),
                     command: 'createOrder',
+                    aggregate: { 
+                        name: 'order'
+                    },
                     payload: { 
                         text: orderText,
                         userId : orderUserId

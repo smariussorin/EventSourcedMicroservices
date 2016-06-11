@@ -11,15 +11,18 @@ function (evt, saga, callback) {
     vms.forEach(function(entry) {
       var cmd = {
         command: 'deleteOrder',
+        aggregate: { 
+          name: 'order'
+        },
         payload: {
-            id : entry.id,
+          id : entry.id,
         },
         meta: evt.meta
       };
 
-      //saga.addCommandToSend(cmd);
+      saga.addCommandToSend(cmd);
     }); 
   });
 
-  //saga.commit(callback);
+  saga.commit(callback);
 });

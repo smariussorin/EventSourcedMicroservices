@@ -82,6 +82,9 @@ require([
             var cmd = new Backbone.CQRS.Command({
                 id:_.uniqueId('msg'),
                 command: 'deleteAccount',
+                aggregate: { 
+                    name: 'account'
+                },
                 payload: { 
                     id: accountId
                 },
@@ -112,6 +115,9 @@ require([
                 var cmd = new Backbone.CQRS.Command({
                     id:_.uniqueId('msg'),
                     command: 'changeAccount',
+                    aggregate: { 
+                        name: 'account'
+                    },
                     payload: { 
                         id: this.model.id,
                         name: accountName,
@@ -169,6 +175,9 @@ require([
                 var cmd = new Backbone.CQRS.Command({
                     id:_.uniqueId('msg'),
                     command: 'createAccount',
+                    aggregate: { 
+                        name: 'account'
+                    },
                     payload: { 
                         name: accountName,
                         email : accountEmail
