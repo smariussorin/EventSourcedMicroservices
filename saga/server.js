@@ -45,7 +45,7 @@ const saga = require('cqrs-saga')({
         host: 'localhost',                          // optional
         port: 6379,                                 // optional
         db: 0,                                      // optional
-        prefix: 'readmodel_revision',               // optional
+        prefix: 'readmodel_saga_revision',          // optional
         timeout: 10000                              // optional
         // password: 'secret'                          // optional
     }

@@ -1,5 +1,6 @@
 module.exports = require('cqrs-saga').defineSaga({
   name: 'accountCreated',
+  aggregate: 'account',
   containingProperties: ['payload.id'],
   id: 'payload.id',
 },
