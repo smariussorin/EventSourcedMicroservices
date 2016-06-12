@@ -20,9 +20,6 @@
     "payload": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string"
-        },
         "categoryId": {
           "type": "string",
         },
@@ -54,7 +51,7 @@
           "type": "string"
         }
       },
-      "required": ["id", "categoryId", "description", "discount", "images", "name", "price", "shortDescription", "status", "unit"]
+      "required": ["categoryId", "description", "discount", "images", "name", "price", "shortDescription", "status", "unit"]
     }
   },
   "required": ["id", "command", "payload"]
