@@ -14,7 +14,6 @@
     "angular-route": "latest",
     "angularfire": "latest",
     "angular-ui-router": "latest",
-    "backbone-ng-view": "latest",
     "fontawesome": "latest",
     "angular-bootstrap": "0.14.3",
     "angular-fullscreen": "latest",
@@ -32,10 +31,6 @@
     "angular.CQRS": "latest",
     "angular-socket-io": "latest",
     "angular-underscore-module": "^1.0.3"
-  },
-  "devDependencies": {
-    "angular-mocks": "latest",
-    "angular-scenario": "latest"
   },
   "overrides": {
     "bootstrap": {

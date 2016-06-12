@@ -1,39 +1,45 @@
 'use strict';
 
 app
-.controller('DashboardCtrl', ['$scope', '$state', '$stateParams', '$firebaseArray', '$firebaseObject', 'FBURL', '$filter', 'uploadImage', 'user', 'toastr',
-  function($scope, $state, $stateParams, $firebaseArray, $firebaseObject, FBURL, $filter, uploadImage, user, toastr) {
+.controller('DashboardCtrl', ['$scope', '$state', 'categoryRepository', 'productRepository', 'orderRepository', '$firebaseArray',  'FBURL', '$filter', 'uploadImage', 'user', 'toastr',
+  function($scope, $state, categoryRepository, productRepository, orderRepository, $firebaseArray, FBURL, $filter, uploadImage, user, toastr) {
 
     $scope.page = {
       title: 'Dashboard'
     };
-
-      // General database variable
-      var ref = new Firebase(FBURL);
-      $scope.products = $firebaseArray(ref.child('products'));
-      $scope.orders = $firebaseArray(ref.child('orders'));
-      $scope.users = $firebaseArray(ref.child('users'));
-      $scope.categories = $firebaseArray(ref.child('categories'));
-
-      $scope.categoriesObject = $firebaseObject(ref.child('categories'));
-      //////////////////////////// *General database variable
-
-      $scope.users.$loaded(function(){
-        $scope.activeUsers = $filter('filter')($scope.users, {blocked: false});
+    var getCategoriesPromise = categoryRepository.query().$promise;
+    getCategoriesPromise
+      .then(function (result) {
+        $scope.categories = result.items;
       });
 
-      $scope.ordersValue = 0;
+    var getProductsPromise = productRepository.query().$promise;
+    getProductsPromise
+      .then(function (result) {
+        $scope.products = result.items;
+      });
 
-      $scope.orders.$loaded(function(){
+    var getOrdersPromise = orderRepository.query().$promise;
+    getOrdersPromise
+      .then(function (result) {
+        $scope.orders = result.items;
+
+        $scope.ordersValue = 0;
         angular.forEach($scope.orders, function(val, key) {
           $scope.ordersValue += val.subTotal;
         });
       });
 
-    }])
+    // General Firebase variable
+    var ref = new Firebase(FBURL);
+    $scope.users = $firebaseArray(ref.child('users'));
+    $scope.users.$loaded(function(){
+      $scope.activeUsers = $filter('filter')($scope.users, {blocked: false});
+    });
+  }])
 
-.controller('OrdersChartCtrl', ['$scope', '$filter', '$http',
-  function($scope, $filter, $http) {
+.controller('OrdersChartCtrl', ['$scope', 'orderRepository', '$filter', '_',
+  function($scope, orderRepository,  $filter, _) {
 
     $scope.range = '7d';
 
@@ -43,13 +49,12 @@ app
     };
 
     function fetchOrders(){
-      $scope.orders.$ref()
-      .orderByChild('createdAt')
-      .limitToLast(1)
-      .once('value', function(snapshot){
-        snapshot.forEach(function(data) {
+       var getOrdersPromise = orderRepository.query().$promise;
+      getOrdersPromise
+        .then(function (result) {
+          $scope.orders = $filter('orderBy')(result.items, 'createdAt');
 
-          var lastOrder = data.val();
+          var lastOrder = _.last($scope.orders);
           var lastDate = moment(lastOrder.createdAt).startOf('day').format('x');
           var x;
           var dayDuration = 86400000;
@@ -79,22 +84,19 @@ app
             lastDate += dayDuration;
           }
 
-          $scope.orders.$loaded(function(){
-            angular.forEach($scope.chart.labels, function(date){
-              var dayValue = 0;
-              angular.forEach($scope.orders, function(order){
-                var orderDate = $filter('date')(order.createdAt, 'dd MMM');
-                if (orderDate === date) {
-                  dayValue += order.subTotal;
-                }
-              });
-              $scope.chart.datasets[0].data.push(dayValue);
+          angular.forEach($scope.chart.labels, function(date){
+            var dayValue = 0;
+            angular.forEach($scope.orders, function(order){
+              var orderDate = $filter('date')(order.createdAt, 'dd MMM');
+              if (orderDate === date) {
+                dayValue += order.subTotal;
+              }
             });
+            $scope.chart.datasets[0].data.push(dayValue);
           });
-
         });
-      });
     }
+    
     fetchOrders();
 
     $scope.$watch('range', function(newVal, oldVal){
