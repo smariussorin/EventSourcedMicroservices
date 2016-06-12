@@ -58,6 +58,8 @@ var app = angular
 
   app.config(function (CQRSProvider) { 
     CQRSProvider.setUrlFactory(function (viewModelName, parameters) {
-     return 'http://localhost:3000/api/' + viewModelName + CQRSProvider.toUrlGETParameterString(parameters);
+      return '';
+      // currently disabled, request collection manually
+      // return 'http://localhost:3000/api/' + viewModelName + CQRSProvider.toUrlGETParameterString(parameters);
     });
   });

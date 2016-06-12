@@ -12,8 +12,10 @@ app
       });
 
       $scope.user = user;
-
       $scope.order = {};
+      $scope.settings ={
+        globalVAT : 19
+      };
     }])
 
   .controller('OrdersListCtrl', ['$scope', 'CQRS', 'DenormalizationService', 'orderRepository', '$filter', 'ngTableParams', 'toastr', '_', 
