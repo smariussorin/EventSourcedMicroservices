@@ -9,7 +9,8 @@ app
   .constant('loginRedirectPath', 'core.login')
 
   // main app settings
-  .controller('MainCtrl', ['$scope', 'fbutil', 'FBURL', 'Auth', '$state', 'loginRedirectPath', '$firebaseObject', function($scope, fbutil, FBURL, Auth, $state, loginRedirectPath, $firebaseObject) {
+  .controller('MainCtrl', ['$scope', 'fbutil', 'Auth', '$state', 'loginRedirectPath', '$firebaseObject', 
+    function($scope, fbutil, Auth, $state, loginRedirectPath, $firebaseObject) {
 
     $scope.main = {
       title: 'EMISS',
@@ -24,8 +25,6 @@ app
         rightbarShow: false
       }
     };
-
-    $scope.settings = $firebaseObject(new Firebase(FBURL).child('settings'));
 
     Auth.$onAuth(function(user) {
       if(user) {

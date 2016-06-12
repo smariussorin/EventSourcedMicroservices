@@ -30,12 +30,12 @@ var app = angular
 
     // pass in events from your socket
     socket.on('events', function(evt) {
-      var evt = {
+      var event = {
         aggregateType: evt.aggregate.name, 
-        name: evt.event, payload: 
-        evt.payload
+        name: evt.event, 
+        payload: evt.payload
       };
-      CQRS.eventReceived(evt);
+      CQRS.eventReceived(event);
     });
 
     // pass commands to your socket
