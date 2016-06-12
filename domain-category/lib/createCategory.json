@@ -20,6 +20,9 @@
     "payload": {
       "type": "object",
       "properties": {
+        "name": {
+          "type": "string"
+        },
         "parent": {
           "type": "boolean"
         },
@@ -27,7 +30,7 @@
           "type": "string"
         }
       },
-      "required": ["parent", "parentId"]
+      "required": ["name", "parent"]
     }
   },
   "required": ["id", "command", "payload"]

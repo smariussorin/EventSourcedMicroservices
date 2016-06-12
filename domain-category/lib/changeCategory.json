@@ -23,6 +23,9 @@
         "id": {
           "type": "string"
         },
+        "name": {
+          "type": "string"
+        },
         "parent": {
           "type": "boolean"
         },
@@ -30,7 +33,7 @@
           "type": "string"
         }
       },
-      "required": ["id", "parent", "parentId"]
+      "required": ["id", "name", "parent"]
     }
   },
   "required": ["id", "command", "payload"]
