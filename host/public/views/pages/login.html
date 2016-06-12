@@ -1,0 +1,93 @@
+<div class="page page-core page-login">
+
+  <div class="container w-420 p-15 bg-white mt-40 text-center">
+
+
+    <h2 class="text-light text-primary">
+      <span ng-hide="createMode">Log In</span>
+      <span ng-show="createMode">Sign Up</span>
+    </h2>
+
+    <div ng-hide="createMode">
+
+      <form name="loginForm" class="form-validation mt-20" role="form" novalidate>
+
+        <div class="form-group">
+          <input type="email" name="email" class="form-control underline-input" placeholder="Email" ng-model="email" ng-minlength="3" required>
+          <p class="help-block text-left">
+            <span ng-show="loginForm.email.$invalid && !loginForm.email.$pristine">Email is required.</span>
+            <span ng-show="loginForm.email.$error.minlength">Email is too short.</span>
+          </p>
+        </div>
+
+        <div class="form-group">
+          <input type="password" name="password" placeholder="Password" class="form-control underline-input" ng-model="pass" ng-minlength="4" required>
+          <p class="help-block text-left">
+            <span ng-show="loginForm.password.$invalid && !loginForm.password.$pristine">Password is required.</span>
+            <span ng-show="loginForm.password.$error.minlength">Password is too short.</span>
+          </p>
+        </div>
+
+        <div class="form-group text-left mt-20">
+          <button type="submit" class="btn btn-primary b-0 br-2 mr-5" ng-disabled='loginForm.$invalid' ng-click="login(email,pass,rememberMe)">Login</button>
+          <!--<label class="checkbox checkbox-custom checkbox-custom-sm inline-block">
+            <input type="checkbox" ng-model="rememberMe" ng-true-value="default" ng-false-value="none"><i></i> Remember me
+          </label>-->
+          <a ui-sref="core.forgotpass" class="pull-right mt-10">Forgot Password?</a>
+        </div>
+
+      </form>
+
+      <div class="bg-slategray lt wrap-reset mt-40">
+        <p class="m-0">
+        <a href="javascript:;" class="text-uppercase" ng-click="createMode = true">Register an account</a>
+        </p>
+      </div>
+
+    </div>
+
+    <div ng-show="createMode">
+
+      <form name="signupForm" class="form-validation mt-20" novalidate>
+
+        <p class="help-block text-left">
+           Enter your personal details below:
+        </p>
+
+        <div class="form-group">
+          <input type="email" name="email" class="form-control underline-input" placeholder="Email" ng-model="email" ng-minlength="3" required>
+          <p class="help-block text-left">
+            <span ng-show="signupForm.email.$invalid && !signupForm.email.$pristine">Email is required.</span>
+            <span ng-show="signupForm.email.$error.minlength">Email is too short.</span>
+          </p>
+        </div>
+
+        <div class="form-group">
+          <input type="password" name="password" placeholder="Password" class="form-control underline-input" ng-model="pass" ng-minlength="4" required>
+          <p class="help-block text-left">
+            <span ng-show="signupForm.password.$invalid && !signupForm.password.$pristine">Password is required.</span>
+            <span ng-show="signupForm.password.$error.minlength">Password is too short.</span>
+          </p>
+        </div>
+
+        <div class="form-group">
+          <input type="password" name="passwordConfirm" placeholder="Password Confirm" class="form-control underline-input" ng-model="confirm" ui-validate=" '$value==pass' " ui-validate-watch=" 'pass' " required>
+          <p class="help-block text-left">
+            <span ng-show='signupForm.passwordConfirm.$error.validator' class="text-red">Passwords do not match!</span>
+          </p>
+        </div>
+
+      </form>
+
+      <div class="bg-slategray lt wrap-reset mt-40">
+        <p class="m-0 text-left" ng-show="createMode">
+          <button type="submit" class="btn btn-greensea b-0 text-uppercase pull-right" ng-disabled='signupForm.$invalid' ng-click="register()">Submit</button>
+          <a href="javascript:;" class="btn btn-lightred b-0 text-uppercase" ng-click="createMode = false">Back</a>
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

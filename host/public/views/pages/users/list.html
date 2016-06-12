@@ -1,0 +1,123 @@
+<div class="page page-users" ng-controller="UsersListCtrl">
+
+  <div class="pageheader">
+
+    <h2>Manage Users</h2>
+
+    <div class="page-bar">
+
+      <ul class="page-breadcrumb">
+        <li>
+          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+        </li>
+        <li>
+          <a ui-sref="app.users.list">Manage Users</a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <!-- row -->
+  <div class="row">
+
+
+    <div class="col-md-12">
+
+      <!-- tile -->
+      <section class="tile" fullscreen="isFullscreen01">
+
+        <!-- tile header -->
+        <div class="tile-header dvd dvd-btm">
+          <h1 class="custom-font"><strong>Manage </strong>Users</h1>
+          <ul class="controls">
+
+            <li><button class="btn-nostyle" ui-sref="app.users.new"><i class="fa fa-plus mr-5"></i> Add User</button></li>
+
+          </ul>
+        </div>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <div class="tile-body">
+
+
+          <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+              <input type="text" class="form-control underline-input w-md pull-right mb-20" placeholder="Search..." ng-model="searchText">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table ng-table="tableParams" class="table table-custom" template-pagination="custom/pager">
+              <tr ng-repeat="user in $data">
+                <td data-title="'Name'" sortable="'name'">
+                  <a href="javascript:;" ui-sref="app.users.show({ id: user.$id })">{{user.name}}</a>
+                </td>
+                <td data-title="'Email'" sortable="'email'">
+                  <a href="javascript:;" ui-sref="app.users.show({ id: user.$id })">{{user.email}}</a>
+                </td>
+                <td data-title="'Address'" sortable="'address.street'">
+                  {{user.address.street}}, {{user.address.city}} {{user.address.zip}}, {{user.address.country}}
+                </td>
+                <td data-title="'Phone'" sortable="'phone'">
+                  {{user.phone}}
+                </td>
+                <td data-title="'Role'" sortable="'role'">
+                  {{user.role}}
+                </td>
+                <td data-title="'Actions'" class="actions" style="width: 320px;">
+                  <button class="btn-nostyle edit" ui-sref="app.users.edit({ id: user.$id })">Edit</button>
+                  <button class="btn-nostyle delete" ng-click="delete(user)">Delete</button>
+                  <button class="btn-nostyle passReset" ng-click="passReset(user)">Password reset</button>
+                </td>
+
+              </tr>
+            </table>
+            <script type="text/ng-template" id="custom/pager">
+              <div class="ng-cloak ng-table-pager mt-20" ng-if="params.data.length">
+
+                <div ng-if="params.settings().counts.length" class="ng-table-counts btn-group pull-right">
+
+                  <select ng-options="count for count in params.settings().counts" ng-model="params.$params.count" class="form-control"></select>
+
+                </div>
+
+                <ul class="pagination pagination-xs pagination-custom">
+                  <li ng-class="{'disabled': !page.active && !page.current, 'active': page.current}" ng-repeat="page in pages" ng-switch="page.type">
+                    <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">Previous</a>
+                    <a ng-switch-when="first" ng-click="params.page(page.number)" href="">
+                      <span ng-bind="page.number"></span>
+                    </a>
+                    <a ng-switch-when="page" ng-click="params.page(page.number)" href="">
+                      <span ng-bind="page.number"></span>
+                    </a>
+                    <a ng-switch-when="more" ng-click="params.page(page.number)" href="">&#8230;</a>
+                    <a ng-switch-when="last" ng-click="params.page(page.number)" href="">
+                      <span ng-bind="page.number"></span>
+                    </a>
+                    <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next</a>
+                  </li>
+                </ul>
+              </div>
+            </script>
+
+          </div>
+
+
+        </div>
+        <!-- /tile body -->
+
+      </section>
+      <!-- /tile -->
+
+    </div>
+
+  </div>
+  <!-- /row -->
+
+</div>
+
+

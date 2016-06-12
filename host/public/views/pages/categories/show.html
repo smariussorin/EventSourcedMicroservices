@@ -1,0 +1,62 @@
+<div class="page page-products" ng-controller="ShowCategoryCtrl">
+
+  <div class="pageheader">
+
+    <h2>{{category.name}}</h2>
+
+    <div class="page-bar">
+
+      <ul class="page-breadcrumb">
+        <li>
+          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+        </li>
+        <li>
+          <a ui-sref="app.categories.list">Manage Categories</a>
+        </li>
+        <li>
+          <a ui-sref="app.categories.show({ id: category.$id })">{{category.name}}</a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <!-- row -->
+  <div class="row">
+
+
+    <div class="col-md-12">
+
+      <!-- tile -->
+      <section class="tile tile-simple">
+
+
+        <!-- tile body -->
+        <div class="tile-body">
+
+
+          <ul class="list-unstyled m-20">
+            <li><strong>Name:</strong> {{category.name}}</li>
+            <li ng-if="category.parentId"><strong>Parent Category:</strong> {{category.parent.name}}</li>
+          </ul>
+
+          <div class="form-footer">
+            <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ui-sref="app.categories.list"><i class="fa fa-arrow-left"></i> Back</button>
+          </div>
+
+        </div>
+        <!-- /tile body -->
+
+
+      </section>
+      <!-- /tile -->
+
+    </div>
+
+  </div>
+  <!-- /row -->
+
+</div>
+
+

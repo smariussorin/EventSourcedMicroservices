@@ -1,0 +1,65 @@
+<div class="page page-users" ng-controller="ShowUserCtrl">
+
+  <div class="pageheader">
+
+    <h2>{{user.name || user.email}}</h2>
+
+    <div class="page-bar">
+
+      <ul class="page-breadcrumb">
+        <li>
+          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+        </li>
+        <li>
+          <a ui-sref="app.users.list">Manage Users</a>
+        </li>
+        <li>
+          <a ui-sref="app.users.show({ id: user.$id })">{{user.name || user.email}}</a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <!-- row -->
+  <div class="row">
+
+
+    <div class="col-md-12">
+
+      <!-- tile -->
+      <section class="tile tile-simple">
+
+
+        <!-- tile body -->
+        <div class="tile-body">
+
+
+          <ul class="list-unstyled m-20">
+            <li ng-if="user.name"><strong>Name:</strong> {{user.name}}</li>
+            <li><strong>Email:</strong> {{user.email}}</li>
+            <li><strong>Address:</strong> {{user.address.street}}, {{user.address.city}} {{user.address.zip}}, {{user.address.country}}</li>
+            <li><strong>Phone:</strong> {{user.phone}}</li>
+            <li><strong>Role:</strong> {{user.role}}</li>
+          </ul>
+
+          <div class="form-footer">
+            <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ui-sref="app.users.list"><i class="fa fa-arrow-left"></i> Back</button>
+          </div>
+
+        </div>
+        <!-- /tile body -->
+
+
+      </section>
+      <!-- /tile -->
+
+    </div>
+
+  </div>
+  <!-- /row -->
+
+</div>
+
+

@@ -1,0 +1,116 @@
+<div class="page page-products" ng-controller="ShowProductCtrl">
+
+  <div class="pageheader">
+
+    <h2>{{product.name}}</h2>
+
+    <div class="page-bar">
+
+      <ul class="page-breadcrumb">
+        <li>
+          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+        </li>
+        <li>
+          <a ui-sref="app.products.list">Manage Products</a>
+        </li>
+        <li>
+          <a ui-sref="app.products.show({ id: product.id })">{{product.name}}</a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <!-- row -->
+  <div class="row">
+
+
+    <div class="col-md-12">
+
+      <!-- tile -->
+      <section class="tile tile-simple">
+
+
+        <!-- tile body -->
+        <div class="tile-body">
+
+
+          <!-- row -->
+          <div class="row">
+
+            <!-- col -->
+            <div class="col-md-4" gallery="{selector: 'a.img-link'}">
+
+              <a href="{{product.images[0].src}}" class="img-link" ng-show="product.images.length > 0">
+                <img ng-src="{{product.images[0].src}}" alt="" class="img-responsive mb-20">
+              </a>
+
+              <a href="javascript:;" ng-show="product.images.length === 0 || !product.images">
+                <img src="images/no-product-image.png" alt="product.name" class="img-responsive mb-20">
+              </a>
+
+              <!-- thumbnails -->
+              <slick
+                dots="true"
+                infinite="false"
+                speed="300"
+                slides-to-show="4"
+                touch-move="false"
+                slides-to-scroll="1"
+                arrows="false"
+                init-onload="true"
+                data="product.images">
+                <div ng-repeat="image in product.images" ng-if="!$first" href="{{product.images[$index].src}}">
+                  <a href="{{product.images[$index].src}}" class="img-link">
+                    <img ng-src="{{product.images[$index].src}}" alt="product.name" class="img-responsive">
+                  </a>
+                </div>
+              </slick>
+              <!-- /thumbnails -->
+
+            </div>
+            <!-- /col -->
+
+            <!-- col -->
+            <div class="col-md-8">
+
+              <h2 class="custom-font mb-5">
+                {{product.name}}
+                <span class="label" ng-class="{'bg-success' : product.status == 'published','bg-warning' : product.status == 'not published','bg-lightred' : product.status == 'banned'}">
+                  {{ product.status }}
+                </span>
+              </h2>
+
+              <p class="short-desc text-sm text-default lt mb-20">{{product.shortDescription}}</p>
+              <p class="desc text-default lt mb-20">{{product.description}}</p>
+
+              <h6><strong>Category:</strong> {{product.category.name}}</h6>
+
+              <h3 class="price mt-40 mb-0 text-success">{{ product.price | currency}} / <small>{{product.unit}}</small></h3>
+              <p class="discount text-sm text-default lt">Discount: {{product.discount}}%</p>
+            </div>
+            <!-- /col -->
+
+          </div>
+          <!-- /row -->
+
+          <div class="form-footer">
+            <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ui-sref="app.products.list"><i class="fa fa-arrow-left"></i> Back</button>
+          </div>
+
+        </div>
+        <!-- /tile body -->
+
+
+      </section>
+      <!-- /tile -->
+
+    </div>
+
+  </div>
+  <!-- /row -->
+
+</div>
+
+

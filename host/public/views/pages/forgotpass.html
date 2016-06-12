@@ -1,0 +1,31 @@
+<div class="page page-core page-login">
+
+  <div class="text-center"></div>
+
+  <div class="container w-420 p-15 bg-white mt-40 text-center">
+
+    <h2 class="text-light text-primary">Forgot Password</h2>
+
+    <form name="form" class="form-validation mt-20" novalidate>
+
+      <p class="help-block text-left">
+         Enter your e-mail address below to reset your password.
+      </p>
+
+      <div class="form-group">
+        <input type="email" class="form-control underline-input" placeholder="Email" ng-model="email" required>
+      </div>
+
+
+    </form>
+
+    <div class="bg-slategray lt wrap-reset mt-40 text-left">
+      <p class="m-0">
+        <a class="btn btn-greensea b-0 text-uppercase pull-right" ng-disabled='form.$invalid' ng-click="ok()">Submit</a>
+        <a ui-sref="core.login" class="btn btn-lightred b-0 text-uppercase">Back</a>
+      </p>
+    </div>
+
+  </div>
+
+</div>

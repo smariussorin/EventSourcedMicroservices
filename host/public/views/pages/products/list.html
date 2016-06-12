@@ -1,0 +1,127 @@
+<div class="page page-products" ng-controller="ProductsListCtrl">
+
+  <div class="pageheader">
+
+    <h2>Manage Products</h2>
+
+    <div class="page-bar">
+
+      <ul class="page-breadcrumb">
+        <li>
+          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+        </li>
+        <li>
+          <a ui-sref="app.products.list">Manage Products</a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <!-- row -->
+  <div class="row">
+
+
+    <div class="col-md-12">
+
+      <!-- tile -->
+      <section class="tile" fullscreen="isFullscreen01">
+
+        <!-- tile header -->
+        <div class="tile-header dvd dvd-btm">
+          <h1 class="custom-font"><strong>Manage </strong>Products</h1>
+          <ul class="controls">
+
+            <li><button class="btn-nostyle" ui-sref="app.products.new"><i class="fa fa-plus mr-5"></i> Add Product</button></li>
+
+          </ul>
+        </div>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <div class="tile-body">
+
+
+          <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+              <input type="text" class="form-control underline-input w-md pull-right mb-20" placeholder="Search..." ng-model="searchText">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table ng-table="tableParams" class="table table-custom" template-pagination="custom/pager">
+              <tr ng-repeat="product in $data">
+                <td data-title="'ID'" sortable="'id'">
+                  {{product.id}}
+                </td>
+                <td data-title="'Name'" sortable="'name'">
+                  <a href="javascript:;" ui-sref="app.products.show({ id: product.id })">{{product.name}}</a>
+                </td>
+                <td data-title="'Category'" sortable="'category/name'">
+                  {{product.category.name}}
+                </td>
+                <td data-title="'Price'" sortable="'price'">
+                  {{product.price | currency}}
+                </td>
+                <td data-title="'Date Updated'" sortable="'commitStamp'">
+                  {{product.commitStamp | date: 'medium'}}
+                </td>
+                <td data-title="'Status'" sortable="'status'">
+                  <span class="label" ng-class="{'bg-success' : product.status == 'published','bg-warning' : product.status == 'not published','bg-lightred' : product.status == 'banned'}">
+                    {{ product.status }}
+                  </span>
+                </td>
+                <td data-title="'Actions'" class="actions">
+                  <button class="btn-nostyle edit" ui-sref="app.products.edit({ id: product.id })">Edit</button>
+                  <button class="btn-nostyle delete" ng-click="delete(product)">Delete</button>
+                </td>
+
+              </tr>
+            </table>
+            <script type="text/ng-template" id="custom/pager">
+              <div class="ng-cloak ng-table-pager mt-20" ng-if="params.data.length">
+
+                <div ng-if="params.settings().counts.length" class="ng-table-counts btn-group pull-right">
+
+                  <select ng-options="count for count in params.settings().counts" ng-model="params.$params.count" class="form-control"></select>
+
+                </div>
+
+                <ul class="pagination pagination-xs pagination-custom">
+                  <li ng-class="{'disabled': !page.active && !page.current, 'active': page.current}" ng-repeat="page in pages" ng-switch="page.type">
+                    <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">Previous</a>
+                    <a ng-switch-when="first" ng-click="params.page(page.number)" href="">
+                      <span ng-bind="page.number"></span>
+                    </a>
+                    <a ng-switch-when="page" ng-click="params.page(page.number)" href="">
+                      <span ng-bind="page.number"></span>
+                    </a>
+                    <a ng-switch-when="more" ng-click="params.page(page.number)" href="">&#8230;</a>
+                    <a ng-switch-when="last" ng-click="params.page(page.number)" href="">
+                      <span ng-bind="page.number"></span>
+                    </a>
+                    <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next</a>
+                  </li>
+                </ul>
+              </div>
+            </script>
+
+          </div>
+
+
+        </div>
+        <!-- /tile body -->
+
+      </section>
+      <!-- /tile -->
+
+    </div>
+
+  </div>
+  <!-- /row -->
+
+</div>
+
+

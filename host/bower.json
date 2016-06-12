@@ -1,0 +1,57 @@
+{
+  "name": "emissapp",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular": "latest",
+    "json3": "~3.3.1",
+    "es5-shim": "~3.1.0",
+    "bootstrap": "latest",
+    "angular-resource": "latest",
+    "angular-cookies": "latest",
+    "angular-sanitize": "latest",
+    "angular-animate": "latest",
+    "angular-touch": "latest",
+    "angular-route": "latest",
+    "angularfire": "latest",
+    "angular-ui-router": "latest",
+    "backbone-ng-view": "latest",
+    "fontawesome": "latest",
+    "angular-bootstrap": "0.14.3",
+    "angular-fullscreen": "latest",
+    "ng-table": "latest",
+    "jquery.slimscroll": "latest",
+    "angular-ui-utils": "latest",
+    "chosen_v1.4.2": "https://github.com/harvesthq/chosen/releases/download/1.4.2/chosen_v1.4.2.zip",
+    "angular-chosen-localytics": "latest",
+    "angular-toastr": "latest",
+    "ng-file-upload": "latest",
+    "momentjs": "latest",
+    "magnific-popup": "latest",
+    "angular-slick": "~0.2.1",
+    "Chart.js": "~1.0.2",
+    "angular.CQRS": "latest",
+    "angular-socket-io": "latest",
+    "angular-underscore-module": "^1.0.3"
+  },
+  "devDependencies": {
+    "angular-mocks": "latest",
+    "angular-scenario": "latest"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "./dist/css/bootstrap.css",
+        "./dist/js/bootstrap.min.js"
+      ]
+    },
+    "fontawesome": {
+      "main": [
+        "css/font-awesome.min.css"
+      ]
+    }
+  },
+  "appPath": "app",
+  "resolutions": {
+    "angular": "1.4.7"
+  }
+}

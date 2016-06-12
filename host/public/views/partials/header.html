@@ -1,0 +1,67 @@
+<header class="clearfix">
+
+  <!-- Branding -->
+  <div class="branding {{main.settings.navbarHeaderColor}}">
+    <a class="brand" ui-sref="app.dashboard">
+      <span><strong>EMISS</strong></span>
+    </a>
+    <a href="javascript:;" class="offcanvas-toggle visible-xs-inline" offcanvas-sidebar><i class="fa fa-bars"></i></a>
+  </div>
+  <!-- Branding end -->
+
+
+
+
+
+
+  <!-- Left-side navigation -->
+  <ul class="nav-left pull-left list-unstyled list-inline">
+    <li class="sidebar-collapse divided-right">
+      <a href="javascript:;" collapse-sidebar>
+        <i class="fa fa-outdent"></i>
+      </a>
+    </li>
+  </ul>
+  <!-- Left-side navigation end -->
+
+
+
+
+
+
+  <!-- Right-side navigation -->
+  <ul class="nav-right pull-right list-inline">
+
+    <li class="dropdown nav-profile" uib-dropdown on-toggle="toggled(open)">
+
+      <a href class="dropdown-toggle" uib-dropdown-toggle>
+        <img src="images/placeholder-avatar.png" alt="" class="img-circle size-30x30" ng-if="!profile.avatar">
+        <img ng-src="{{profile.avatar}}" alt="" class="img-circle size-30x30" ng-if="profile.avatar">
+        <span>{{profile.name || profile.email}} <i class="fa fa-angle-down"></i></span>
+      </a>
+
+      <ul class="dropdown-menu animated littleFadeInUp pull-right mr-10">
+
+        <li ng-class="{'active':$state.includes('app.profile')}">
+          <a ui-sref="app.profile">
+            <i class="fa fa-user"></i>My Account
+          </a>
+        </li>
+        <li>
+          <a href="javascript:;" ng-click="logout()">
+            <i class="fa fa-sign-out"></i>Logout
+          </a>
+        </li>
+
+      </ul>
+
+    </li>
+
+
+  </ul>
+  <!-- Right-side navigation end -->
+
+
+
+
+</header>

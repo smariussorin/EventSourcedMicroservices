@@ -1,0 +1,159 @@
+<div class="page page-orders">
+
+  <div class="pageheader">
+
+    <h2>My Account</h2>
+
+    <div class="page-bar">
+
+      <ul class="page-breadcrumb">
+        <li>
+          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+        </li>
+        <li>
+          <a ui-sref="app.profile">My Account</a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- row -->
+  <div class="row">
+    <!-- col -->
+    <div class="col-md-6">
+
+
+      <!-- tile -->
+      <section class="tile" fullscreen="isFullscreen01">
+
+        <!-- tile header -->
+        <div class="tile-header dvd dvd-btm">
+          <h1 class="custom-font"><strong>Personal </strong>Info</h1>
+        </div>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <div class="tile-body">
+
+
+          <form class="form-horizontal" name="personalInfo">
+
+            <div class="form-group mt-20">
+              <label for="avatar" class="col-sm-3 control-label">Avatar</label>
+              <div class="col-sm-9">
+                <img ngf-thumbnail="user.avatar" alt="" class="mb-10" style="width: 80px; height: 80px"><button class="btn-nostyle text-danger ml-5" ng-click="user.avatar = null" ng-show="user.avatar"><i class="fa fa-times"></i></button>
+                <input type="file" name="avatar" id="avatar" ng-model="user.avatar" ngf-select ngf-pattern="'image/*'" accept="image/*" ngf-max-size="5MB" />
+                <uib-progressbar class="progress-xxs mt-10" value="user.avatar.progress" type="cyan" ng-show="user.avatar.progress >= 0"></uib-progressbar>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="name" class="col-sm-3 control-label">Name</label>
+              <div class="col-sm-9">
+                <input type="text" name="name" class="form-control" id="name" placeholder="User name..." ng-model="user.name">
+              </div>
+            </div>
+
+            <div class="form-group" ng-show="user.changeEmail">
+              <label for="email" class="col-sm-3 control-label">Email <span class="text-danger" style="font-size: 15px;">*</span></label>
+              <div class="col-sm-9">
+                <input type="email" name="email" class="form-control" id="email" placeholder="User email..." ng-model="user.email" required>
+              </div>
+            </div>
+
+            <div class="form-group" ng-show="user.changePass">
+              <label for="oldpassword" class="col-sm-3 control-label">Old Password <span class="text-danger" style="font-size: 15px;">*</span></label>
+              <div class="col-sm-9">
+                <input type="password" name="oldpassword" class="form-control" id="oldpassword" placeholder="User old password..." ng-model="user.oldpassword" ng-required="user.changePass">
+              </div>
+            </div>
+
+            <div class="form-group" ng-show="user.changePass || user.changeEmail">
+              <label for="password" class="col-sm-3 control-label">Password <span class="text-danger" style="font-size: 15px;">*</span></label>
+              <div class="col-sm-9">
+                <input type="password" name="password" class="form-control" id="password" placeholder="User password..." ng-model="user.password" ng-required="user.changePass || user.changeEmail">
+              </div>
+            </div>
+
+            <div class="form-group" ng-show="user.changePass || user.changeEmail">
+              <label for="password" class="col-sm-3 control-label">Password Confirm <span class="text-danger" style="font-size: 15px;">*</span></label>
+              <div class="col-sm-9">
+                <input type="password" name="passwordConfirm" placeholder="Password confirmarion..." class="form-control" ng-model="user.passwordConfirm" ui-validate=" '$value==user.password' " ui-validate-watch=" 'user.password' " ng-required="user.changePass || user.changeEmail">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="street" class="col-sm-3 control-label">Street</label>
+              <div class="col-sm-9">
+                <input type="text" name="street" class="form-control" id="street" placeholder="User address street..." ng-model="user.address.street">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="city" class="col-sm-3 control-label">City</label>
+              <div class="col-sm-9">
+                <input type="text" name="city" class="form-control" id="city" placeholder="User address city..." ng-model="user.address.city">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="zip" class="col-sm-3 control-label">ZIP</label>
+              <div class="col-sm-9">
+                <input type="text" name="zip" class="form-control" id="zip" placeholder="User address zip..." ng-model="user.address.zip">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="country" class="col-sm-3 control-label">Country</label>
+              <div class="col-sm-9">
+                <input type="text" name="country" class="form-control" id="country" placeholder="User address country..." ng-model="user.address.country">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="phone" class="col-sm-3 control-label">Phone</label>
+              <div class="col-sm-9">
+                <input type="text" name="phone" class="form-control" id="phone" placeholder="User address phone..." ng-model="user.phone">
+              </div>
+            </div>
+
+            <div class="form-group mt-40">
+              <div class="col-sm-9 col-md-offset-3">
+                <label class="checkbox checkbox-custom-alt inline mr-20">
+                  <input type="checkbox" ng-click="user.changeEmail = !user.changeEmail" ng-disabled="user.changePass"><i></i>
+                  Change email
+                </label>
+                <label class="checkbox checkbox-custom-alt inline">
+                  <input type="checkbox" ng-click="user.changePass = !user.changePass" ng-disabled="user.changeEmail"><i></i>
+                  Change password
+                </label>
+              </div>
+            </div>
+
+          </form>
+
+
+        </div>
+        <!-- /tile body -->
+
+        <div class="tile-footer text-right bg-tr-black lter dvd dvd-top">
+          <!-- SUBMIT BUTTON -->
+          <button class="btn btn-success" ng-click="saveUser(personalInfo)" ng-disabled="personalInfo.$invalid">Save</button>
+        </div>
+
+      </section>
+      <!-- /tile -->
+
+
+    </div>
+    <!-- /col -->
+
+  </div>
+  <!-- /row -->
+
+
+</div>

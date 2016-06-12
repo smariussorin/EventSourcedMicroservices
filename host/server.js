@@ -2,7 +2,9 @@
 //
 // `node server.js` 
 var express = require('express')
+   ,bodyParser = require('body-parser')
   , http = require('http')
+  , path    = require('path')
   , colors = require('../colors')
   , log4js = require('log4js')
   , socket = require('socket.io')
@@ -33,19 +35,22 @@ var app = express()
   , server = http.createServer(app)
   , io = socket.listen(server);
 
-app.use(require('body-parser').json());
-app.use(express['static'](__dirname + '/public'));
-app.use('/scripts', express.static(__dirname + '/node_modules'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
-app.set('view engine', 'jade');
+app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname + '/public/views');
-
+app.set('view engine', 'html');
+app.use(express.static(path.join(__dirname, 'public')));
 
 // BOOTSTRAPPING
 logger.trace('\nBOOTSTRAPPING:'.cyan);
 
 var eventDenormalizerOptions = {
-    denormalizerPath: __dirname + '/viewBuilders',
+    denormalizerPath: __dirname + '/app/viewBuilders',
     repository: eventDenormalizerConfig.repository,
     revisionGuardStore: eventDenormalizerConfig.revisionGuardStore
 };
@@ -65,6 +70,11 @@ viewmodel.read(eventDenormalizerOptions.repository, function(err, repository) {
 
         logger.trace('3. -> routes'.cyan);
         require('./app/routes').actions(app, eventDenormalizerOptions, repository);
+
+        // angular routes
+        app.use('/*', function(req, res){
+            res.sendFile('./public/index.html', { root: __dirname });
+        });
 
         logger.trace('4. -> message bus'.cyan);
         var msgbus = require('../msgbus');

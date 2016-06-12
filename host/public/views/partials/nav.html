@@ -1,0 +1,20 @@
+<div id="sidebar-wrap" ng-controller="NavCtrl">
+
+  <uib-accordion close-others="oneAtTime" slimscroll="{height: '100%'}">
+
+    <uib-accordion-group is-open="status.isFirstOpen" ng-class="{'open': status.isFirstOpen, 'closed': !status.isFirstOpen}">
+      <uib-accordion-heading>
+        Navigation <i class="fa" ng-class="{'fa-angle-up': status.isFirstOpen, 'fa-angle-down': !status.isFirstOpen}"></i>
+      </uib-accordion-heading>
+      <ul id="navigation" nav-collapse ripple>
+        <li ui-sref-active="active"><a ui-sref="app.dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+        <li ng-class="{'active':$state.includes('app.categories')}"><a ui-sref="app.categories.list"><i class="fa fa-bookmark-o"></i> <span>Categories</span></a></li>
+        <li ng-class="{'active':$state.includes('app.products')}"><a ui-sref="app.products.list"><i class="fa fa-gift"></i> <span>Products</span></a></li>
+        <li ng-class="{'active':$state.includes('app.orders')}"><a ui-sref="app.orders.list"><i class="fa fa-usd"></i> <span>Orders</span></a></li>
+        <li ng-class="{'active':$state.includes('app.users')}"><a ui-sref="app.users.list"><i class="fa fa-users"></i> <span>Users</span></a></li>
+      </ul>
+    </uib-accordion-group>
+
+  </uib-accordion>
+
+</div>

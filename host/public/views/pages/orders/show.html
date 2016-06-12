@@ -1,0 +1,218 @@
+<div class="page page-orders" ng-controller="ShowOrderCtrl">
+
+  <div class="pageheader">
+
+    <h2>Order Details <span >// {{order.id}}</span></h2>
+
+    <div class="page-bar">
+
+      <ul class="page-breadcrumb">
+        <li>
+          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+        </li>
+        <li>
+          <a ui-sref="app.orders.list">Manage Order</a>
+        </li>
+        <li>
+          <a ui-sref="app.orders.show({ id: order.id })">{{order.id}}</a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <!-- row -->
+  <div class="row">
+    <!-- col -->
+    <div class="col-md-12">
+
+
+      <!-- tile -->
+      <section class="tile time-simple">
+
+
+        <!-- tile body -->
+        <div class="tile-body">
+
+
+          <!-- row -->
+          <div class="row">
+
+            <!-- col -->
+            <div class="col-md-9">
+              <p class="text-default lt">Created: {{ order.createdAt | date: 'MMMM dd, yyyy' }} at {{ order.createdAt | date: 'HH:mm' }}</p>
+              <p class="text-uppercase text-strong mt-40 mb-0 custom-font">Status</p>
+              <h3 class="text-uppercase mt-0 mb-20" ng-class="{'text-success' : order.status == 'approved','text-warning' : order.status == 'pending','text-lightred' : order.status == 'cancelled','text-primary' : order.status == 'received'}">{{order.status | uppercase}}</h3>
+            </div>
+            <!-- /col -->
+
+            <!-- col -->
+            <div class="col-md-3">
+              <p class="text-uppercase text-strong mb-10 custom-font">Customer</p>
+              <ul class="list-unstyled text-default lt mb-20">
+                <li><strong class="inline-block w-xs">Name:</strong> {{order.customer.name}}</li>
+                <li><strong class="inline-block w-xs">State:</strong> {{order.customer.country}}</li>
+                <li><strong class="inline-block w-xs">Phone:</strong> {{order.customer.phone}}</li>
+                <li><strong class="inline-block w-xs">Email:</strong> <a href="javascript:;">{{order.customer.email}}</a></li>
+              </ul>
+            </div>
+            <!-- /col -->
+
+          </div>
+          <!-- /row -->
+
+          <!-- row -->
+          <div class="row b-t pt-20">
+
+            <!-- col -->
+            <div class="col-md-3 b-r">
+              <p class="text-uppercase text-strong mb-10 custom-font">Order Details</p>
+              <ul class="list-unstyled text-default lt mb-20">
+                <li><strong>ID:</strong> <a href="javascript:;">{{order.id}}</a></li>
+                <li>{{ order.createdAt | date: 'MMMM dd, yyyy' }} at {{ order.createdAt | date: 'HH:mm' }}</li>
+                <li>{{order.customer.name}}</li>
+                <li>{{order.customer.country}}</li>
+              </ul>
+            </div>
+            <!-- /col -->
+
+            <!-- col -->
+            <div class="col-md-6 b-r">
+
+              <p class="text-uppercase text-strong mb-10 custom-font">
+                Address
+              </p>
+
+              <!-- col -->
+              <div class="col-md-6">
+                <ul class="list-unstyled text-default lt mb-20">
+                  <li>{{order.shipTo.name}}</li>
+                  <li>{{order.shipTo.street}}</li>
+                  <li>{{order.shipTo.city}}</li>
+                  <li>{{order.shipTo.zip}}</li>
+                  <li>{{order.shipTo.country}}</li>
+                </ul>
+              </div>
+              <!-- /col -->
+
+              <!-- col -->
+              <div class="col-md-6">
+                <ul class="list-unstyled text-default lt mb-20">
+                  <li>{{order.customer.email}}</li>
+                  <li>{{order.customer.phone}}</li>
+                </ul>
+              </div>
+              <!-- /col -->
+
+            </div>
+            <!-- /col -->
+
+            <!-- col -->
+            <div class="col-md-3">
+              <p class="text-uppercase text-strong mb-10 custom-font">Delivery & Payment</p>
+              <ul class="list-unstyled text-default lt mb-20">
+                <li><strong>Delivery:</strong> {{order.delivery}}</li>
+                <li><strong>Payment:</strong> {{order.payment}}</li>
+              </ul>
+            </div>
+            <!-- /col -->
+
+          </div>
+          <!-- /row -->
+
+        </div>
+        <!-- /tile body -->
+
+      </section>
+      <!-- /tile -->
+
+
+      <!-- tile -->
+      <section class="tile tile-simple">
+
+        <!-- tile body -->
+        <div class="tile-body p-0">
+
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th>Product Image</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Unit Price</th>
+                <th>Amount</th>
+                <th>Total</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="(k, product) in order.products">
+                <td style="vertical-align: middle;">
+                  <img ng-src="{{product.extra.images[0].src}}" alt="{{product.extra.name}}" style="width: 64px; height: 64px"/>
+                </td>
+                <td style="vertical-align: middle;">
+                  <a ui-sref="app.products.show({id: product.extra.id})">{{product.extra.name}}</a><br>
+                  <span class="text-sm text-muted">{{product.extra.shortDescription | limitTo: 80}}...</span>
+                </td>
+                <td style="vertical-align: middle;">
+                  {{product.extra.category.name}}
+                </td>
+                <td style="vertical-align: middle;">
+                  {{product.price | currency}}
+                </td>
+                <td style="vertical-align: middle;">
+                  {{product.amount}}
+                </td>
+                <td style="vertical-align: middle;">
+                  {{(product.price) * product.amount | currency}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <!-- /tile body -->
+
+      </section>
+      <!-- /tile -->
+
+
+    </div>
+    <!-- /col -->
+  </div>
+  <!-- /row -->
+
+  <!-- row -->
+  <div class="row">
+    <!-- col -->
+    <div class="col-md-3 col-md-offset-9 price-total">
+
+      <!-- tile -->
+      <section class="tile tile-simple bg-tr-black lter">
+
+        <!-- tile body -->
+        <div class="tile-body">
+
+          <ul class="list-unstyled">
+            <li><strong class="inline-block w-sm mb-5">Subtotal:</strong> {{order.subTotal | currency}}</li>
+            <li><strong class="inline-block w-sm mb-5">Vat %:</strong> {{ settings.globalVAT }}</li>
+            <li><strong class="inline-block w-sm mb-5">Vat Total:</strong> {{ order.subTotal * (settings.globalVAT / 100) | currency}}</li>
+            <li><strong class="inline-block w-sm">Total:</strong> <h3 class="inline-block text-success">{{ order.subTotal + (order.subTotal * (settings.globalVAT / 100)) | currency}}</h3></li>
+          </ul>
+
+        </div>
+        <!-- /tile body -->
+
+      </section>
+      <!-- /tile -->
+
+    </div>
+    <!-- /col -->
+  </div>
+  <!-- /row -->
+
+</div>
+
+

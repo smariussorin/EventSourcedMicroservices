@@ -1,0 +1,56 @@
+<div class="page page-products" ng-controller="NewProductCtrl">
+
+  <div class="pageheader">
+
+    <h2>Add Product</h2>
+
+    <div class="page-bar">
+
+      <ul class="page-breadcrumb">
+        <li>
+          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+        </li>
+        <li>
+          <a ui-sref="app.products.list">Manage Products</a>
+        </li>
+        <li>
+          <a ui-sref="app.products.new">Add Product</a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <!-- row -->
+  <div class="row">
+
+
+    <div class="col-md-12">
+
+      <!-- tile -->
+      <section class="tile tile-simple">
+
+
+        <!-- tile body -->
+        <div class="tile-body" ng-include="'views/pages/products/_form.html'">
+
+
+
+
+
+        </div>
+        <!-- /tile body -->
+
+
+      </section>
+      <!-- /tile -->
+
+    </div>
+
+  </div>
+  <!-- /row -->
+
+</div>
+
+
