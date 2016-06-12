@@ -23,29 +23,88 @@
         "id": {
           "type": "string"
         },
-        "date": {
-          "type": "string", "format": "date" 
+        "customer": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+            },
+            "country": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string", "format": "email" 
+            },
+            "name": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string", "format": "phone" 
+            },
+            "street": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "string"
+            },
+          },
+          "required": ["city", "country", "email", "name", "phone", "street", "zip"]
         },
-        "placedby": {
+        "delivery": {
           "type": "string"
+        },
+        "payment": {
+          "type": "string"
+        },
+        "products": {
+          "type": "array",
+          "minItems": 1,
+          "items": { 
+            "type" : "object", 
+            "properties" : { 
+              "id" : { 
+                "type" : "string" 
+              },
+              "amount" : { 
+                "type" : "number" 
+              },
+              "price" : { 
+                "type" : "number" 
+              } 
+            },
+            "required": ["id", "amount", "price"] 
+          },
+          "uniqueItems": true
+        },
+        "shipTo": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+            },
+            "country": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "street": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "string"
+            },
+          },
+          "required": ["city", "country", "name", "street", "zip"]
         },
         "status": {
           "type": "string"
         },
-        "quantity": {
+        "subTotal": {
           "type": "number"
-        },
-        "total": {
-          "type": "number"
-        },
-        "shipto": {
-          "type": "string"
-        },
-        "selected": {
-          "type": "boolean"
         }
       },
-      "required": ["id", "date", "placedby", "status", "quantity", "total", "shipto", "selected"]
+      "required": ["id", "customer", "delivery", "payment", "products", "shipTo", "status", "subTotal"]
     }
   },
   "required": ["id", "command", "payload"]
