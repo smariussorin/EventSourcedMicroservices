@@ -16,12 +16,12 @@ log4js.configure({
         {
             type: 'log4js-node-mongodb',
             connectionString: 'localhost:27017/logs',
-            category: 'saga-account'
+            category: 'saga-category'
         }
     ]
 });
 
-var logger = log4js.getLogger('saga-account');
+var logger = log4js.getLogger('saga-category');
 
 //configurate saga
 const saga = require('cqrs-saga')({
@@ -30,8 +30,8 @@ const saga = require('cqrs-saga')({
         type: 'mongodb',
         host: 'localhost',                          // optional
         port: 27017,                                // optional
-        dbName: 'domain-saga',                           // optional
-        collectionName: 'sagas',             // optional
+        dbName: 'domain-saga-category',             // optional
+        collectionName: 'sagas',                    // optional
         timeout: 10000                              // optional
         // authSource: 'authedicationDatabase',        // optional
         // username: 'technicalDbUser',                // optional
@@ -45,7 +45,7 @@ const saga = require('cqrs-saga')({
         host: 'localhost',                          // optional
         port: 6379,                                 // optional
         db: 0,                                      // optional
-        prefix: 'readmodel_saga_revision',          // optional
+        prefix: 'readmodel-saga-category-revision',  // optional
         timeout: 10000,                              // optional
         password: 'ztEB@DSWP^3P5Zt'                 // optional
     }
@@ -93,13 +93,25 @@ denormalizer.init(function(err) {
             msgbus.emitCommand(cmd);
         })
 
+        saga.onEventMissing(function (info, evt) {
+            logger.warn(logger.warning('\n Missed event ' + evt.event + ':'));
+            logger.warn(evt);
+            logger.warn(info);
+
+            /*
+            saga.handle(evt, function (err) {
+                if (err) { logger.error(err); }
+            });
+            */
+        });
+
         denormalizer.defaultEventExtension((evt, callback) => {
             saga.handle(evt, (err) => {
                 callback(err, evt);
             });
         });
 
-        logger.trace('Starting saga service'.cyan);
+        logger.trace('Starting Category Saga service'.cyan);
     });
 });
 

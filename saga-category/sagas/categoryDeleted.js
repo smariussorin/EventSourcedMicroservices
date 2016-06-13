@@ -1,18 +1,19 @@
 module.exports = require('cqrs-saga').defineSaga({
-  name: 'accountDeleted',
-  aggregate: 'account',
+  name: 'categoryDeleted',
+  aggregate: 'category',
   containingProperties: ['payload.id'],
   id: 'payload.id',
 },
 function (evt, saga, callback) {
-  var userId =  evt.payload.id;
-  const ordersRepo = require('../viewBuilders/order/collection');
-  ordersRepo.findViewModels({ userId: userId }, (err, vms) => {
-    vms.forEach(function(entry) {
+  var categoryId =  evt.payload.id;
+  
+  const productsRepo = require('../viewBuilders/product/collection');
+  productsRepo.findViewModels({ categoryId: categoryId }, (err, products) => {
+    products.forEach(function(entry) {
       var cmd = {
-        command: 'deleteOrder',
+        command: 'deleteProduct',
         aggregate: { 
-          name: 'order'
+          name: 'product'
         },
         payload: {
           id : entry.id,

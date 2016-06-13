@@ -95,6 +95,21 @@ viewmodel.read(eventDenormalizerOptions.repository, function(err, repository) {
             io.sockets.emit('events', evt);
         });
 
+        // on receiving an missed__event__ from eventDenormalizer module:
+        //
+        // - Handle missed event
+        eventDenormalizer.onEventMissing(function (info, evt) {
+           logger.warn(logger.warning('\n Missed event ' + evt.event + ':'));
+           logger.warn(evt);
+           logger.warn(info);
+           
+           /*
+           eventDenormalizer.handle(evt, function (err) {
+            if (err) { logger.error(err); }
+           });
+           */
+        });
+
         // SETUP COMMUNICATION CHANNELS
 
         // on receiving __commands__ from browser via socket.io emit them on the ĥub module (which will 

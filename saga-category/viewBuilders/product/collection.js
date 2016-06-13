@@ -1,4 +1,4 @@
 module.exports = require('cqrs-eventdenormalizer').defineCollection({
-  name: 'order',
+  name: 'product',
   defaultPayload: 'payload',
 });
