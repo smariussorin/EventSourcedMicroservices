@@ -89,6 +89,12 @@ app
       templateUrl: 'views/pages/orders/list.html',
       authRequired: true
     },
+    'app.orders.new': {
+      url: '/new/:productId',
+      controller: 'NewOrderCtrl',
+      templateUrl: '',
+      authRequired: true
+    },
     'app.orders.show': {
       url: '/show/:id',
       controller: 'OrdersCtrl',

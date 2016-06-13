@@ -26,51 +26,6 @@ app
       var eventNameUpdateStatus = "orderStatusChanged";
       var commandNameUpdateStatus = "changeStatusOrder";
 
-/*
-       CQRS.sendCommand({
-            id:_.uniqueId('msg'),
-            command: 'createOrder',
-            aggregate: { 
-              name: $scope.aggregate
-            },
-            payload: {  
-               "customer":{  
-                  "city":"Bratislava",
-                  "country":"Slovakia",
-                  "email":"johny@douey.com",
-                  "name":"John Douey",
-                  "phone":"+421946599455",
-                  "street":"Bratislavska 52",
-                  "zip":"884 65"
-               },
-               "delivery":"Pick-up",
-               "payment":"Cash",
-               "products": [
-                  {  
-               "id" : "000001",
-                     "amount":3,
-                     "price":4.99
-                  },
-                  {  
-               "id" : "000004",
-                     "amount":1,
-                     "price":9.99
-                  }
-               ],
-               "shipTo":{  
-                  "city":"Bratislava",
-                  "country":"Slovakia",
-                  "name":"John Douey",
-                  "street":"Bratislavska 52",
-                  "zip":"884 65"
-               },
-               "status":"pending",
-               "subTotal":554.65,
-            },
-          });
-*/
-
-
       var categoryDeletedDenormalizationService = DenormalizationService.getDenormalizerFunctions(eventNameDelete, $scope.aggregate);
       DenormalizationService.registerDenormalizerFunction({
         viewModelName: $scope.aggregate,
@@ -155,7 +110,7 @@ app
 
           $scope.tableParams = new ngTableParams({
             page: 1,            // show first page
-            count: 10,          // count per page
+            count: 30,          // count per page
             sorting: {
               id: 'asc'     // initial sorting
             }
@@ -190,7 +145,7 @@ app
         return categoryRepository.query().$promise;
       }, function(){
 
-        $state.go('app.products.list', {}, {reload: true});
+        $state.go('app.orders.list', {}, {reload: true});
       })
       .then(function (result) {
 
@@ -207,4 +162,58 @@ app
           value.extra.category = $filter('filter')($scope.categories, { id: value.extra.categoryId }, true)[0];
         });
       });
+    }])
+
+  .controller('NewOrderCtrl', ['$scope', 'CQRS', '$state', '$stateParams', '_',
+    function($scope, CQRS, $state, $stateParams, _) {
+
+        var productId = $stateParams.productId;
+
+        CQRS.sendCommand({
+          id:_.uniqueId('msg'),
+          command: 'createOrder',
+          aggregate: { 
+            name: $scope.aggregate
+          },
+          payload: {  
+            "customer":{  
+              "city":"Bratislava",
+              "country":"Slovakia",
+              "email":"johny@douey.com",
+              "name":"Test Customer " + productId,
+              "phone":"+421946599455",
+              "street":"Bratislavska 52",
+              "zip":"884 65"
+            },
+            "delivery":"Pick-up",
+            "payment":"Cash",
+            "products": [
+            {  
+             "id" : "575f150a4b068ec432e79936",
+             "amount":3,
+             "price":165.00
+           },
+           {  
+             "id" : productId,
+             "amount":1,
+             "price":175.00
+           }
+           ],
+           "shipTo":{  
+            "city":"Bratislava",
+            "country":"Slovakia",
+            "name":"John Douey",
+            "street":"Bratislavska 52",
+            "zip":"884 65"
+          },
+          "status":"pending",
+          "subTotal":670,
+        },
+      });
+
+      $state.go('app.orders.list', {}, {reload: true});
     }]);
+
+
+
+ 

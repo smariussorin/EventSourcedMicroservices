@@ -124,27 +124,12 @@ app
 .controller('ProductsChartCtrl', ['$scope', 'categoryRepository', 'productRepository',  '$filter', 
   function($scope, categoryRepository, productRepository, $filter) {
 
-    $scope.chart = [
-    {
-      value: 0,
-      color:"#F7464A",
-      highlight: "#FF5A5E",
-      label: ""
-    },
-    {
-      value: 0,
-      color: "#46BFBD",
-      highlight: "#5AD3D1",
-      label: ""
-    },
-    {
-      value: 0,
-      color: "#FDB45C",
-      highlight: "#FFC870",
-      label: ""
-    }
-    ];
+    $scope.chart = [];
 
+    var generateColor = function(){
+      return '#' + (Math.random().toString(16) + "000000").substring(2,8);
+    }
+    
     var getCategoriesPromise = categoryRepository.query().$promise;
     getCategoriesPromise
     .then(function (result) {
@@ -174,6 +159,9 @@ app
           }
         });
 
+        $scope.chart[key] = {};
+        $scope.chart[key].color = generateColor();
+        $scope.chart[key].highlight = generateColor();
         $scope.chart[key].label = val.name;
         $scope.chart[key].value = quantity;
       });
