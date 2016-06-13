@@ -25,28 +25,41 @@ var app = angular
     'underscore'
   ]);
 
-  app.run(['$rootScope', 'StoreService' ,'CQRS', 'socket', 'Auth', function($rootScope, StoreService, CQRS, socket, Auth) {
-    var store = StoreService.createForController($rootScope);
+  app.run(['$rootScope', 'StoreService' ,'CQRS', 'socket', 'Auth', '$timeout', 'toastr',
+    function($rootScope, StoreService, CQRS, socket, Auth, $timeout, toastr) {
+      var store = StoreService.createForController($rootScope);
 
-    // pass in events from your socket
-    socket.on('events', function(evt) {
-      var event = {
-        aggregateType: evt.aggregate.name, 
-        name: evt.event, 
-        payload: evt.payload
-      };
-      CQRS.eventReceived(event);
-    });
+      var handleLoadingEvents = function(isLoading){
+        $rootScope.loading = isLoading;
+        if(isLoading)
+        {
+          $timeout(function() {
+            $rootScope.loading = false; 
+            toastr.warning('Something might went wrong! Please retry!', 'Oops!');
+          }, 10000);
+        }
+      }
+      // pass in events from your socket
+      socket.on('events', function(evt) {
+        handleLoadingEvents(false);
+        var event = {
+          aggregateType: evt.aggregate.name, 
+          name: evt.event, 
+          payload: evt.payload
+        };
+        CQRS.eventReceived(event);
+      });
 
-    // pass commands to your socket
-    CQRS.onCommand(function (data) {
-      socket.emit('commands', data);
-    });
+      // pass commands to your socket
+      CQRS.onCommand(function (data) {
+        handleLoadingEvents(true);
+        socket.emit('commands', data);
+      });
 
-    // track status of authentication
-    Auth.$onAuth(function(user) {
-      $rootScope.loggedIn = !!user;
-    });
+      // track status of authentication
+      Auth.$onAuth(function(user) {
+        $rootScope.loggedIn = !!user;
+      });
 
   }]);
 
