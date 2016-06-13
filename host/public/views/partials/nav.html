@@ -7,7 +7,7 @@
         Navigation <i class="fa" ng-class="{'fa-angle-up': status.isFirstOpen, 'fa-angle-down': !status.isFirstOpen}"></i>
       </uib-accordion-heading>
       <ul id="navigation" nav-collapse ripple>
-        <li ui-sref-active="active"><a ui-sref="app.dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+        <li ui-sref-active="active"><a ui-sref="app.overview"><i class="fa fa-dashboard"></i> <span>Overview</span></a></li>
         <li ng-class="{'active':$state.includes('app.categories')}"><a ui-sref="app.categories.list"><i class="fa fa-bookmark-o"></i> <span>Categories</span></a></li>
         <li ng-class="{'active':$state.includes('app.products')}"><a ui-sref="app.products.list"><i class="fa fa-gift"></i> <span>Products</span></a></li>
         <li ng-class="{'active':$state.includes('app.orders')}"><a ui-sref="app.orders.list"><i class="fa fa-usd"></i> <span>Orders</span></a></li>

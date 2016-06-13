@@ -34,8 +34,11 @@ var app = angular
         if(isLoading)
         {
           $timeout(function() {
-            $rootScope.loading = false; 
-            toastr.warning('Something might went wrong! Please retry!', 'Oops!');
+            if($rootScope.loading)
+            {
+              $rootScope.loading = false; 
+              toastr.warning('Something might went wrong! Please retry!', 'Oops!');
+            }
           }, 10000);
         }
       }

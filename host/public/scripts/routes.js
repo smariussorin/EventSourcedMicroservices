@@ -8,10 +8,10 @@ app
       templateUrl: 'views/app.html',
       authRequired: true
     },
-    'app.dashboard': {
-      url: '/dashboard',
-      controller: 'DashboardCtrl',
-      templateUrl: 'views/pages/dashboard.html',
+    'app.overview': {
+      url: '/overview',
+      controller: 'OverviewCtrl',
+      templateUrl: 'views/pages/overview.html',
       authRequired: true
     },
 

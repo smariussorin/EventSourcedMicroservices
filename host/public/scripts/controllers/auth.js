@@ -4,7 +4,7 @@ app.controller('AuthCtrl', ['$scope', 'Auth', '$state', 'fbutil', 'FBURL', '$fir
 
   //redirect if user is logged in
   if ($scope.loggedIn) {
-     $state.go('app.dashboard', {}, {reload: true});
+     $state.go('app.overview', {}, {reload: true});
   }
 
   $scope.email = null;
@@ -18,7 +18,7 @@ app.controller('AuthCtrl', ['$scope', 'Auth', '$state', 'fbutil', 'FBURL', '$fir
     Auth.$authWithPassword({ email: email, password: pass }, {rememberMe: rememberMe})
       .then(function(authData) {
         console.log("Authenticated successfully with payload:", authData);
-        $state.go('app.dashboard', {}, {reload: true});
+        $state.go('app.overview', {}, {reload: true});
       }, function(err) {
         $scope.err = errMessage(err);
         console.log("Login Failed!", err);
@@ -46,7 +46,7 @@ app.controller('AuthCtrl', ['$scope', 'Auth', '$state', 'fbutil', 'FBURL', '$fir
 
         })
         .then(function(/* user */) {
-          $state.go('app.dashboard', {}, {reload: true});
+          $state.go('app.overview', {}, {reload: true});
         }, function(err) {
           $scope.err = errMessage(err);
         });

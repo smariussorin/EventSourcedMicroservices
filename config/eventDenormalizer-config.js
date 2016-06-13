@@ -20,8 +20,8 @@ module.exports = {
         port: 6379,                                 // optional
         db: 0,                                      // optional
         prefix: 'readmodel_revision',               // optional
-        timeout: 10000                              // optional
-        // password: 'secret'                          // optional
+        timeout: 10000,                              // optional
+        password: 'ztEB@DSWP^3P5Zt'                 // optional
     },
     eventDefinition : commonConfig.eventDefinition
 }

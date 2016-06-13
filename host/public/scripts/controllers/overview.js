@@ -1,11 +1,11 @@
 'use strict';
 
 app
-.controller('DashboardCtrl', ['$scope', '$state', 'categoryRepository', 'productRepository', 'orderRepository', '$firebaseArray',  'FBURL', '$filter', 'uploadImage', 'user', 'toastr',
+.controller('OverviewCtrl', ['$scope', '$state', 'categoryRepository', 'productRepository', 'orderRepository', '$firebaseArray',  'FBURL', '$filter', 'uploadImage', 'user', 'toastr',
   function($scope, $state, categoryRepository, productRepository, orderRepository, $firebaseArray, FBURL, $filter, uploadImage, user, toastr) {
 
     $scope.page = {
-      title: 'Dashboard'
+      title: 'Overview'
     };
     var getCategoriesPromise = categoryRepository.query().$promise;
     getCategoriesPromise
@@ -55,45 +55,48 @@ app
           $scope.orders = $filter('orderBy')(result.items, 'createdAt');
 
           var lastOrder = _.last($scope.orders);
-          var lastDate = moment(lastOrder.createdAt).startOf('day').format('x');
-          var x;
-          var dayDuration = 86400000;
+          if(lastOrder)
+          {
+            var lastDate = moment(lastOrder.createdAt).startOf('day').format('x');
+            var x;
+            var dayDuration = 86400000;
 
-          $scope.chart = {
-            labels : [],
-            datasets : [
-            {
-              fillColor : "#45ccce",
-              strokeColor : "rgba(0,0,0,0)",
-              data : []
-            }
-            ]
-          };
-          $scope.options.tooltipTemplate = "<%if (label){%><%=label%>: <%}%> $<%= value %>";
-
-          if ($scope.range === '7d') {
-            x = 7;
-            lastDate -= 6*dayDuration;
-          } else if ($scope.range === '31d') {
-            x = 31;
-            lastDate -= 30*dayDuration;
-          }
-
-          for(var i = 0; i < x; i++) {
-            $scope.chart.labels.push($filter('date')(lastDate, 'dd MMM'));
-            lastDate += dayDuration;
-          }
-
-          angular.forEach($scope.chart.labels, function(date){
-            var dayValue = 0;
-            angular.forEach($scope.orders, function(order){
-              var orderDate = $filter('date')(order.createdAt, 'dd MMM');
-              if (orderDate === date) {
-                dayValue += order.subTotal;
+            $scope.chart = {
+              labels : [],
+              datasets : [
+              {
+                fillColor : "#45ccce",
+                strokeColor : "rgba(0,0,0,0)",
+                data : []
               }
+              ]
+            };
+            $scope.options.tooltipTemplate = "<%if (label){%><%=label%>: <%}%> $<%= value %>";
+
+            if ($scope.range === '7d') {
+              x = 7;
+              lastDate -= 6*dayDuration;
+            } else if ($scope.range === '31d') {
+              x = 31;
+              lastDate -= 30*dayDuration;
+            }
+
+            for(var i = 0; i < x; i++) {
+              $scope.chart.labels.push($filter('date')(lastDate, 'dd MMM'));
+              lastDate += dayDuration;
+            }
+
+            angular.forEach($scope.chart.labels, function(date){
+              var dayValue = 0;
+              angular.forEach($scope.orders, function(order){
+                var orderDate = $filter('date')(order.createdAt, 'dd MMM');
+                if (orderDate === date) {
+                  dayValue += order.subTotal;
+                }
+              });
+              $scope.chart.datasets[0].data.push(dayValue);
             });
-            $scope.chart.datasets[0].data.push(dayValue);
-          });
+          }
         });
     }
     

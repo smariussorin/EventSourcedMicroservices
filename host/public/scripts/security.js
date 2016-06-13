@@ -54,7 +54,7 @@ app
       }
     });
     // routes which are not in our map are redirected to /home
-    $urlRouterProvider.otherwise('/app/dashboard');
+    $urlRouterProvider.otherwise('/app/overview');
 
     // use the HTML5 History API
     $locationProvider.html5Mode(true);

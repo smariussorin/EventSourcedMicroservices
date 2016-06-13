@@ -8,7 +8,7 @@
 
       <ul class="page-breadcrumb">
         <li>
-          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+          <a ui-sref="app.overview"><i class="fa fa-home"></i> {{main.title}}</a>
         </li>
         <li>
           <a ui-sref="app.products.list">Manage Products</a>
@@ -65,8 +65,8 @@
                 <td data-title="'Price'" sortable="'price'">
                   {{product.price | currency}}
                 </td>
-                <td data-title="'Date Updated'" sortable="'commitStamp'">
-                  {{product.commitStamp | date: 'medium'}}
+                <td data-title="'Date Created'" sortable="'createdAt'">
+                  {{product.createdAt | date: 'medium'}}
                 </td>
                 <td data-title="'Status'" sortable="'status'">
                   <span class="label" ng-class="{'bg-success' : product.status == 'published','bg-warning' : product.status == 'not published','bg-lightred' : product.status == 'banned'}">
