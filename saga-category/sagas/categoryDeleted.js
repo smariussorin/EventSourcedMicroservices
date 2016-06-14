@@ -23,7 +23,8 @@ function (evt, saga, callback) {
 
       saga.addCommandToSend(cmd);
     }); 
+    
+    saga.commit(callback);
   });
 
-  saga.commit(callback);
 });
