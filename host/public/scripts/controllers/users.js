@@ -2,7 +2,7 @@
 
 app
 
-  .controller('UsersCtrl', ['$scope', '$state', '$stateParams', '$firebaseArray', '$firebaseObject', 'FBURL', 'user',
+  .controller('UsersCtrl', ['$scope', '$state', '$stateParams', '$firebaseArray', '$firebaseObject', 'FBURL', 'currentUser',
     function($scope, $state, $stateParams, $firebaseArray, $firebaseObject, FBURL, currentUser) {
 
       // General database variable
