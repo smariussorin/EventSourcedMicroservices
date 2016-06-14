@@ -8,24 +8,20 @@ function (evt, saga, callback) {
   var productId =  evt.payload.id;
 
   const ordersRepo = require('../viewBuilders/order/collection');
-  ordersRepo.findViewModels({ }, (err, orders) => {
+  ordersRepo.findViewModels({ 'products.id': productId }, (err, orders) => {
     orders.forEach(function(entry) {
-      var productDelected = entry.attributes.products.filter(function(o){return o.id == productId;} )[0];
-      if(productDelected)
-      {
-        var cmd = {
-          command: 'deleteOrder',
-          aggregate: { 
-            name: 'order'
-          },
-          payload: {
-            id : entry.id,
-          },
-          meta: evt.meta
-        };
+		var cmd = {
+		  command: 'deleteOrder',
+		  aggregate: { 
+			name: 'order'
+		  },
+		  payload: {
+			id : entry.id,
+		  },
+		  meta: evt.meta
+		};
 
-        saga.addCommandToSend(cmd);
-      }
+		saga.addCommandToSend(cmd);
     }); 
     
     saga.commit(callback);
