@@ -117,7 +117,7 @@ app
 
           $scope.tableParams = new ngTableParams({
             page: 1,            // show first page
-            count: 10,          // count per page
+            count: 30,          // count per page
             sorting: {
               id: 'asc'     // initial sorting
             }
