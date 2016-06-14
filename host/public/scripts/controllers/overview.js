@@ -65,7 +65,7 @@ app
               labels : [],
               datasets : [
               {
-                fillColor : "#45ccce",
+                fillColor : "#f1c40f",
                 strokeColor : "rgba(0,0,0,0)",
                 data : []
               }
