@@ -65,5 +65,5 @@ domain.init(function(err) {
         msgbus.emitEvent(evt);
     });
     
-    logger.trace('Starting categories domain service'.cyan);
+    logger.trace('Starting Categories Microservice'.cyan);
 });

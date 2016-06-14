@@ -111,7 +111,7 @@ denormalizer.init(function(err) {
             });
         });
 
-        logger.trace('Starting Product Saga service'.cyan);
+        logger.trace('Starting Product Saga Microservice'.cyan);
     });
 });
 

@@ -65,5 +65,5 @@ domain.init(function(err) {
         msgbus.emitEvent(evt);
     });
     
-    logger.trace('Starting orders domain service'.cyan);
+    logger.trace('Starting Orders Microservice'.cyan);
 });
