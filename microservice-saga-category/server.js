@@ -94,7 +94,7 @@ denormalizer.init(function(err) {
         })
 
         saga.onEventMissing(function (info, evt) {
-            logger.warn(logger.warning('\n Missed event ' + evt.event + ':'));
+            logger.warn('\n Missed event ' + evt.event + ':');
             logger.warn(evt);
             logger.warn(info);
 
