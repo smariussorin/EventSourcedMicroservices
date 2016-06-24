@@ -3,7 +3,7 @@
 This is a sample implementation of Microservices CQRS / Eventsourcing Infrastructure in Node.js using:
 http://cqrs.js.org/
 
-![Microservices Architecture with Event Sourcing and CQRS using Node.JS](http://raw.githubusercontent.com/smariussorin/EventSourcedMicroservices/master/image.png)
+![Microservices Architecture with Event Sourcing and CQRS using Node.JS](/image.png)
 
 ### get it up and running
         
