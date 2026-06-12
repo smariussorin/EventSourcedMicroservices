@@ -2,7 +2,7 @@
 var redisOptions = {
     host: 'localhost',                       
     port: 6379,
-    password: 'ztEB@DSWP^3P5Zt'
+    password: process.env.REDIS_PASSWORD
 }
 
 var redis = require('redis')

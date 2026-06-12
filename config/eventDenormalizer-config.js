@@ -21,7 +21,7 @@ module.exports = {
         db: 0,                                      // optional
         prefix: 'readmodel_revision',               // optional
         timeout: 10000,                              // optional
-        password: 'ztEB@DSWP^3P5Zt'                 // optional
+        password: process.env.REDIS_PASSWORD        // optional
     },
     eventDefinition : commonConfig.eventDefinition
 }
